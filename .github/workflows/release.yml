@@ -11,6 +11,6 @@ jobs:
     if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
     uses: frankhaugen/Workflows/.github/workflows/dotnet-publish-release.yml@main
     with:
-      os: windows-latest
+      os: 'windows-latest'
     secrets: inherit
     
