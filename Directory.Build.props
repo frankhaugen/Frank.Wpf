@@ -1,10 +1,12 @@
 <Project>
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net8.0-windows</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
 
+        <UseWPF>true</UseWPF>
+        
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>$(NoWarn);1591</NoWarn>
 
@@ -32,6 +34,7 @@
         <None Include="README.md" Pack="true" PackagePath="\" Condition="Exists('README.md')"/>
         <None Include="../icon.png" Pack="true" PackagePath="\" Condition="!Exists('icon.png')"/>
         <InternalsVisibleTo Include="$(AssemblyName).Tests"/>
+        <InternalsVisibleTo Include="Frank.Wpf.Tests"/>
         <InternalsVisibleTo Include="LINQPadQuery"/>
     </ItemGroup>
 </Project>
