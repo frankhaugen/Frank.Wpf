@@ -19,8 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.Wpf.Tests", "Frank.Wp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.Wpf.Hosting", "Frank.Wpf.Hosting\Frank.Wpf.Hosting.csproj", "{A0FF8070-B043-4CF1-B852-8B6D064DD0E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.Wpf.Tests.App", "Frank.Wpf.Tests.App\Frank.Wpf.Tests.App.csproj", "{04A7B109-21B0-4F3A-9091-0F8F86C99254}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,9 +36,5 @@ Global
 		{A0FF8070-B043-4CF1-B852-8B6D064DD0E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0FF8070-B043-4CF1-B852-8B6D064DD0E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0FF8070-B043-4CF1-B852-8B6D064DD0E6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{04A7B109-21B0-4F3A-9091-0F8F86C99254}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{04A7B109-21B0-4F3A-9091-0F8F86C99254}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{04A7B109-21B0-4F3A-9091-0F8F86C99254}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{04A7B109-21B0-4F3A-9091-0F8F86C99254}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

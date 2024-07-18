@@ -1,6 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <Description>A simple WPF library for .NET 8.0 that provides the basic building blocks for creating a WPF application with Dependency Injection and in the same pattern as ASP.NET Core.</Description>
+        <PackageTags>Wpf, Hosting, Dependency Injection, Configuration</PackageTags>
+        <OutputType>Library</OutputType>
     </PropertyGroup>
 
     <ItemGroup>
