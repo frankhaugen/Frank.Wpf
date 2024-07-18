@@ -21,13 +21,13 @@ jobs:
           token: ${{ github.token }}
           
       - name: Output latest release
-        run: echo "Latest release is ${{ steps.get_release.outputs.tag_name }}"
+        run: echo "Latest release is ${{ steps.get_release.outputs.tag_name }}.${{ github.run_number }}"
           
       - name: Restore NuGet Packages
         run: dotnet restore
       
       - name: Build Solution
-        run: dotnet build --configuration Release --no-restore /p:Version="${{ steps.get_release.outputs.tag_name }}"
+        run: dotnet build --configuration Release --no-restore /p:Version=${{ steps.get_release.outputs.tag_name }}.${{ github.run_number }}
         
       - name: Run Tests
         run: dotnet test --no-build --configuration Release --logger trx --results-directory TestResults
