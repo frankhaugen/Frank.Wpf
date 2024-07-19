@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Description>A WPF extension library that provides a variety of extension methods for WPF controls and other WPF-related classes.</Description>
+        <PackageTags>WPF, Extension, Library, Frank, Haugen</PackageTags>
+        <UseWindowsForms>true</UseWindowsForms>
+        
+    </PropertyGroup>
+
+</Project>

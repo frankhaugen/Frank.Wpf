@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Description>A WPF control that provides simple input controls for text, numbers, and dates, password, and email.</Description>
+        <PackageTags>WPF, Input, Simple, Library, Frank, Haugen</PackageTags>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Frank.Wpf.Core\Frank.Wpf.Core.csproj" />
+    </ItemGroup>
+
+</Project>

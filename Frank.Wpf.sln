@@ -19,6 +19,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.Wpf.Tests", "Frank.Wp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.Wpf.Hosting", "Frank.Wpf.Hosting\Frank.Wpf.Hosting.csproj", "{A0FF8070-B043-4CF1-B852-8B6D064DD0E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.Wpf.Markdown.Previewer", "Frank.Wpf.Markdown.Previewer\Frank.Wpf.Markdown.Previewer.csproj", "{7E03D79E-46A5-41A4-BF1E-4CE3D5461122}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.Wpf.Markdown.Editor", "Frank.Wpf.Markdown.Editor\Frank.Wpf.Markdown.Editor.csproj", "{DCDD0153-A31C-40FF-A414-5BD730F58F3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.Wpf.Controls.Code", "Frank.Wpf.Controls.Code\Frank.Wpf.Controls.Code.csproj", "{13A0A395-052A-4AE7-AE69-10571635524F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.Wpf.Controls.SimpleInputs", "Frank.Wpf.Controls.SimpleInputs\Frank.Wpf.Controls.SimpleInputs.csproj", "{9AB702DD-9DDE-47CD-BEFF-59398C3ABB62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.Wpf.Core", "Frank.Wpf.Core\Frank.Wpf.Core.csproj", "{FE8BF95F-6302-4789-A96A-449174D14859}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +46,25 @@ Global
 		{A0FF8070-B043-4CF1-B852-8B6D064DD0E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0FF8070-B043-4CF1-B852-8B6D064DD0E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0FF8070-B043-4CF1-B852-8B6D064DD0E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E03D79E-46A5-41A4-BF1E-4CE3D5461122}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E03D79E-46A5-41A4-BF1E-4CE3D5461122}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E03D79E-46A5-41A4-BF1E-4CE3D5461122}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E03D79E-46A5-41A4-BF1E-4CE3D5461122}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCDD0153-A31C-40FF-A414-5BD730F58F3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCDD0153-A31C-40FF-A414-5BD730F58F3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCDD0153-A31C-40FF-A414-5BD730F58F3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCDD0153-A31C-40FF-A414-5BD730F58F3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13A0A395-052A-4AE7-AE69-10571635524F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13A0A395-052A-4AE7-AE69-10571635524F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13A0A395-052A-4AE7-AE69-10571635524F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13A0A395-052A-4AE7-AE69-10571635524F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AB702DD-9DDE-47CD-BEFF-59398C3ABB62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AB702DD-9DDE-47CD-BEFF-59398C3ABB62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AB702DD-9DDE-47CD-BEFF-59398C3ABB62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AB702DD-9DDE-47CD-BEFF-59398C3ABB62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE8BF95F-6302-4789-A96A-449174D14859}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE8BF95F-6302-4789-A96A-449174D14859}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE8BF95F-6302-4789-A96A-449174D14859}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE8BF95F-6302-4789-A96A-449174D14859}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
