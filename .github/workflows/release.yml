@@ -9,8 +9,44 @@ jobs:
   release_job:
     name: Release Job
     if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
-    uses: frankhaugen/Workflows/.github/workflows/dotnet-publish-release.yml@main
-    with:
-      os: 'windows-latest'
-    secrets: inherit
-    
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Get latest release
+        id: get_release
+        uses: frankhaugen/Workflows/.github/actions/github-latest-release@main
+        with:
+          token: ${{ github.token }}
+
+      - name: Restore NuGet Packages
+        run: dotnet restore
+
+      - name: Build Solution
+        run: dotnet build --configuration Release --no-restore /p:Version=${{ steps.get_release.outputs.tag }}.${{ github.run_number }}
+
+      - name: Run Tests
+        run: dotnet test --no-build --configuration Release --logger trx --results-directory TestResults
+
+      - name: Pack NuGet Packages
+        run: dotnet pack --no-build --configuration Release --output nupkgs /p:Version=${{ steps.get_release.outputs.tag }}
+
+      - name: Push NuGet Packages
+        run: dotnet nuget push **/*.nupkg  -k ${{ secrets.nugetkey }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Add GitHub NuGet Source
+        run: dotnet nuget add source --username ${{ github.repository_owner }} --password ${{ github.token }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+        
+      - name: Push NuGet Packages to GitHub
+        run: dotnet nuget push **/*.nupkg  -k ${{ github.token }} -s https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json --skip-duplicate
+      
+      - name: Attach to GitHub Release
+        uses: xresloader/upload-to-github-release@v1
+        with:
+          file: '**/*.nupkg'
+          release_id: ${{ steps.get_release.outputs.id }}
+          overwrite: false
+          verbose: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

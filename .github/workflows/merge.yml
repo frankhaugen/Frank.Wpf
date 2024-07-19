@@ -20,9 +20,6 @@ jobs:
         with:
           token: ${{ github.token }}
           
-      - name: Output latest release
-        run: echo "Latest release is ${{ steps.get_release.outputs.tag }}.${{ github.run_number }}"
-          
       - name: Restore NuGet Packages
         run: dotnet restore
       
@@ -36,7 +33,4 @@ jobs:
         run: dotnet pack --no-build --configuration Release --output nupkgs /p:Version=${{ steps.get_release.outputs.tag }}-preview
         
       - name: Push NuGet Packages
-        run: dotnet nuget push nupkgs/*.nupkg  -k ${{ secrets.nugetkey }} -s https://api.nuget.org/v3/index.json --skip-duplicate
-      
-        
-      
+        run: dotnet nuget push **/*.nupkg  -k ${{ secrets.nugetkey }} -s https://api.nuget.org/v3/index.json --skip-duplicate
