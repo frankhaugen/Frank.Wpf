@@ -1,23 +1,20 @@
 ﻿using System.Windows.Controls;
+using MdXaml;
 
 namespace Frank.Wpf.Markdown.Previewer;
 
 public class MarkdownPreviewer : UserControl
 {
-    // private readonly WebBrowser _viewer = new();
-    private readonly RichTextBox _viewer = new();
+    private readonly MarkdownScrollViewer _viewer = new();
     
     public MarkdownPreviewer()
     {
         Content = _viewer;
-        Markdown.MarkdownUpdated += OnMarkdownUpdated;
     }
     
-    public MarkdownContainer Markdown { get; } = new();
-    
-    private void OnMarkdownUpdated(object? sender, MarkdownUpdatedEventArgs e)
+    public string Markdown
     {
-        _viewer.Document = MarkdownToFlowDocumentConverter.Convert(e.Markdown);
-        // _viewer.NavigateToString(Markdown.GetHtml());
+        get => _viewer.Markdown;
+        set => _viewer.Markdown = value;
     }
 }

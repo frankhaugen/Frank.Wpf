@@ -6,7 +6,8 @@ ___
 - [Frank.Wpf.Hosting](#frankwpfhosting)
   - [Features](#features)
   - [Installation](#installation)
-  - [Usage](#usage)
+  - [Usage](#usage)+
+  - 
   - [Advanced usage](#advanced-usage)
 ___
 

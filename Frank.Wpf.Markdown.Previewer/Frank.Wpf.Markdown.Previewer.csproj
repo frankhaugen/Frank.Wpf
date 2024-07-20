@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Frank.Markdown" Version="1.3.0" />
+      <PackageReference Include="MdXaml" Version="1.27.0" />
     </ItemGroup>
 
 </Project>
