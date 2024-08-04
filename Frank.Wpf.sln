@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.Wpf.Windows.SqlRunner
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.Wpf.Controls.Console", "Frank.Wpf.Controls.Console\Frank.Wpf.Controls.Console.csproj", "{2ACEECC6-D78A-43FE-B0B1-6058C9CB0B7E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.Wpf.Controls.HttpMessageRenderer", "Frank.Wpf.Controls.HttpMessageRenderer\Frank.Wpf.Controls.HttpMessageRenderer.csproj", "{4F4A407A-193B-4B10-A3EE-545D0F9F787E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -132,5 +134,9 @@ Global
 		{2ACEECC6-D78A-43FE-B0B1-6058C9CB0B7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2ACEECC6-D78A-43FE-B0B1-6058C9CB0B7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2ACEECC6-D78A-43FE-B0B1-6058C9CB0B7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F4A407A-193B-4B10-A3EE-545D0F9F787E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F4A407A-193B-4B10-A3EE-545D0F9F787E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F4A407A-193B-4B10-A3EE-545D0F9F787E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F4A407A-193B-4B10-A3EE-545D0F9F787E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
