@@ -1,30 +1,18 @@
-﻿using System.Windows;
+﻿using System.Security;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Frank.Wpf.Dialogs;
 
-public class PasswordDialog : Window
+public class PasswordDialog : Dialog<SecureString>
 {
+    private SecureString? _secureString;
+    
     public PasswordDialog()
-    {
-        Title = "Enter Password";
-        Width = 250;
-        Height = 100;
-        WindowStartupLocation = WindowStartupLocation.CenterScreen;
-        ShowInTaskbar = false;
-        ResizeMode = ResizeMode.NoResize;
-        WindowStyle = WindowStyle.ToolWindow;
-        Topmost = true;
-        ShowActivated = true;
-    }
-    
-    public string Password { get; set; }
-    
-    public bool ShowDialog(string message)
     {
         var label = new Label
         {
-            Content = message,
+            Content = "Enter password:",
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
         };
@@ -45,7 +33,7 @@ public class PasswordDialog : Window
         
         button.Click += (sender, args) =>
         {
-            Password = passwordBox.Password;
+            _secureString = passwordBox.SecurePassword;
             DialogResult = true;
         };
         
@@ -60,7 +48,12 @@ public class PasswordDialog : Window
         };
         
         Content = stackPanel;
-        
-        return ShowDialog() == true;
+    }
+    
+    // public string Password { get; set; }
+    /// <inheritdoc />
+    protected override object? GetResultData()
+    {
+        return _secureString;
     }
 }

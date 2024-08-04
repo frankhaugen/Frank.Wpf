@@ -16,7 +16,7 @@ public class MarkdownEditor : UserControl
     /// <inheritdoc />
     public MarkdownEditor()
     {
-        _codeArea = new CodeArea(HighlightingManager.Instance.GetDefinition("Markdown"))
+        _codeArea = new CodeArea(HighlightingManager.Instance.GetDefinition("MarkDown"))
         {
             FontFamily = new("Consolas"),
             FontSize = 12,

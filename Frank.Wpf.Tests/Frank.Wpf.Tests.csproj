@@ -16,10 +16,15 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Xunit.StaFact" Version="1.1.11" />
     </ItemGroup>
 
     <ItemGroup>
         <Using Include="Xunit"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Frank.Wpf.Controls.JsonRenderer\Frank.Wpf.Controls.JsonRenderer.csproj" />
     </ItemGroup>
 
 </Project>

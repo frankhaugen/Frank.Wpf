@@ -11,7 +11,10 @@ public class PageFrame : Frame
     /// <summary>
     /// Initializes a new instance of the <see cref="PageFrame"/> class.
     /// </summary>
-    public PageFrame() => NavigationUIVisibility = NavigationUIVisibility.Visible;
+    public PageFrame()
+    {
+        NavigationUIVisibility = NavigationUIVisibility.Hidden;
+    }
 
     /// <summary>
     /// Sets the page to be displayed in the frame.

@@ -17,4 +17,6 @@ public class TextInput : GroupBox
     }
 
     public new string Content => _textBox.Text;
+
+    public void Clear() => _textBox.Clear();
 }

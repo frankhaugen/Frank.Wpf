@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Frank.Wpf.Controls.Code\Frank.Wpf.Controls.Code.csproj" />
+      <ProjectReference Include="..\Frank.Wpf.Controls.Console\Frank.Wpf.Controls.Console.csproj" />
+      <ProjectReference Include="..\Frank.Wpf.Controls.DataTableGrid\Frank.Wpf.Controls.DataTableGrid.csproj" />
+      <ProjectReference Include="..\Frank.Wpf.Controls.Git\Frank.Wpf.Controls.Git.csproj" />
+      <ProjectReference Include="..\Frank.Wpf.Controls.Grid\Frank.Wpf.Controls.Grid.csproj" />
+      <ProjectReference Include="..\Frank.Wpf.Controls.JsonRenderer\Frank.Wpf.Controls.JsonRenderer.csproj" />
+      <ProjectReference Include="..\Frank.Wpf.Controls.Pages\Frank.Wpf.Controls.Pages.csproj" />
+      <ProjectReference Include="..\Frank.Wpf.Controls.PdfViewer\Frank.Wpf.Controls.PdfViewer.csproj" />
+      <ProjectReference Include="..\Frank.Wpf.Controls.RoslynScript\Frank.Wpf.Controls.RoslynScript.csproj" />
+      <ProjectReference Include="..\Frank.Wpf.Controls.SimpleInputs\Frank.Wpf.Controls.SimpleInputs.csproj" />
+      <ProjectReference Include="..\Frank.Wpf.Core\Frank.Wpf.Core.csproj" />
+      <ProjectReference Include="..\Frank.Wpf.Dialogs\Frank.Wpf.Dialogs.csproj" />
+      <ProjectReference Include="..\Frank.Wpf.Hosting\Frank.Wpf.Hosting.csproj" />
+      <ProjectReference Include="..\Frank.Wpf.Markdown.Editor\Frank.Wpf.Markdown.Editor.csproj" />
+      <ProjectReference Include="..\Frank.Wpf.Markdown.Previewer\Frank.Wpf.Markdown.Previewer.csproj" />
+      <ProjectReference Include="..\Frank.Wpf.Windows.SqlRunner\Frank.Wpf.Windows.SqlRunner.csproj" />
+    </ItemGroup>
+
+</Project>
