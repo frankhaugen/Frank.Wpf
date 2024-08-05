@@ -47,3 +47,28 @@ public class Dropdown : GroupBox
         return item;
     }
 }
+
+public class Dropdown<T> : ContentControl
+{
+    private readonly Dropdown _dropdown;
+    private readonly IEnumerable<T> _items;
+    private readonly Func<T, Guid> _idMember;
+
+    public Dropdown(string header, SelectionChangedEventHandler selectionChanged, IEnumerable<T> items, Func<T, string> displayMember, Func<T, Guid> idMember)
+    {
+        _items = items;
+        _idMember = idMember;
+        _dropdown = new Dropdown(header, selectionChanged);
+
+        foreach (var item in _items)
+        {
+            _dropdown.CreateAndAddItem(idMember(item), displayMember(item));
+        }
+        
+        Content = _dropdown;
+    }
+    
+    public Guid SelectedId => _dropdown.SelectedId;
+    
+    public T SelectedItem => _items.Single(x => _idMember(x) == SelectedId);
+}
