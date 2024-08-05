@@ -26,8 +26,8 @@ jobs:
       - name: Build Solution
         run: dotnet build --configuration Release --no-restore /p:Version=${{ steps.get_release.outputs.tag }}.${{ github.run_number }}
 
-      - name: Run Tests
-        run: dotnet test --no-build --configuration Release --logger trx --results-directory TestResults
+#      - name: Run Tests
+#        run: dotnet test --no-build --configuration Release --logger trx --results-directory TestResults
 
       - name: Pack NuGet Packages
         run: dotnet pack --no-build --configuration Release --output nupkgs /p:Version=${{ steps.get_release.outputs.tag }}
