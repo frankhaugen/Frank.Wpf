@@ -21,4 +21,10 @@ public static class ServiceCollectionExtensions
         services.AddTransient<Window, T>(provider => provider.GetRequiredService<T>());
         return services;
     }
+    
+    public static IServiceCollection AddControl<T>(this IServiceCollection services) where T : Control
+    {
+        services.AddTransient<T>();
+        return services;
+    }
 }
