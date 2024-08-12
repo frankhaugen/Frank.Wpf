@@ -1,7 +1,5 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using Frank.Wpf.Core;
 
 namespace Frank.Wpf.Controls.SimpleInputs;
 
@@ -23,18 +21,14 @@ public class Dropdown<T> : UserControl
 
     public required Func<T, string> DisplayFunc
     {
-        init
-        {
-            _comboBox.DisplayMemberPath = nameof(ComboBoxItem.Content);
-            _comboBox.ItemTemplate = CreateDataTemplate(value);
-        }
+        init => _comboBox.ItemTemplate = CreateDataTemplate(value);
     }
 
     public required Action<T> SelectionChangedAction { get; init; }
 
     private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (_comboBox.SelectedItem is T selectedItem && SelectionChangedAction != null)
+        if (_comboBox.SelectedItem is T selectedItem)
         {
             SelectionChangedAction(selectedItem);
         }
@@ -63,14 +57,14 @@ public class Dropdown<T> : UserControl
             _func = func;
         }
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object? Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
         {
             return value is TInput input ? _func(input) : default;
         }
-
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        
+        public object? ConvertBack(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return value is TOutput output ? output : default;
         }
     }
 }
