@@ -18,5 +18,6 @@ public class Cell : UserControl
     {
         _position = position;
         this.SetGridPosition(_position.Column, _position.Row);
+        this.SetGridSpan(_position.ColumnSpan, _position.RowSpan);
     }
 }

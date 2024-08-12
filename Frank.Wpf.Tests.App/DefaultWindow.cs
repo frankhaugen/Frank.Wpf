@@ -31,5 +31,17 @@ public class DefaultWindow : MainWindow
             var window = new ConsoleWindow();
             window.Show();
         });
+        
+        _windowButtons.AddButton("Show Custom List Box Window", (sender, args) =>
+        {
+            var window = new CustomListBoxWindow();
+            window.Show();
+        });
+        
+        _windowButtons.AddButton("Show Searchable Selection List Window", (sender, args) =>
+        {
+            var window = new SearchableSelectionListWindow();
+            window.Show();
+        });
     }
 }

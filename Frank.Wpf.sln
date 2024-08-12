@@ -54,6 +54,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.Wpf.Controls.HttpMess
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.Wpf.Controls.ExpandoControl", "Frank.Wpf.Controls.ExpandoControl\Frank.Wpf.Controls.ExpandoControl.csproj", "{48C83B4F-0ECE-475A-9F0C-E8DA5FF22877}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.Wpf.Controls.SearchableList", "Frank.Wpf.Controls.SearchableList\Frank.Wpf.Controls.SearchableList.csproj", "{AA842911-72AF-4343-8C87-47D2635FD367}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -143,5 +145,9 @@ Global
 		{48C83B4F-0ECE-475A-9F0C-E8DA5FF22877}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48C83B4F-0ECE-475A-9F0C-E8DA5FF22877}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48C83B4F-0ECE-475A-9F0C-E8DA5FF22877}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA842911-72AF-4343-8C87-47D2635FD367}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA842911-72AF-4343-8C87-47D2635FD367}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA842911-72AF-4343-8C87-47D2635FD367}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA842911-72AF-4343-8C87-47D2635FD367}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

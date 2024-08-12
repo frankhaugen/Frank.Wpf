@@ -1,11 +1,4 @@
-﻿using System.Data;
-using System.Windows;
-using System.Windows.Controls;
-using Frank.Wpf.Controls.Code;
-using Frank.Wpf.Controls.DataTableGrid;
-using Frank.Wpf.Hosting;
-using ICSharpCode.AvalonEdit.Highlighting;
-using Microsoft.Data.Sqlite;
+﻿using Frank.Wpf.Hosting;
 
 namespace Frank.Wpf.Tests.App;
 

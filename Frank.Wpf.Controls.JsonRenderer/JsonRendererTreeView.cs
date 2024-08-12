@@ -6,7 +6,7 @@ using System.Windows.Media;
 
 namespace Frank.Wpf.Controls.JsonRenderer;
 
-public class JsonRendererTreeView : TreeView
+internal class JsonRendererTreeView : TreeView
 {
     private JsonElement? _selectedElement;
     private JsonDocument? Document { get; set; }

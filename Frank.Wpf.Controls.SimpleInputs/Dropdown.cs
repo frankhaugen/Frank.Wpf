@@ -1,74 +1,76 @@
 ﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using Frank.Wpf.Core;
 
 namespace Frank.Wpf.Controls.SimpleInputs;
 
-public class Dropdown : GroupBox
+public class Dropdown<T> : UserControl
 {
-    private readonly ComboBox _content = new ComboBox();
+    private readonly ComboBox _comboBox = new();
 
-    public Dropdown(string header, SelectionChangedEventHandler selectionChanged)
+    public Dropdown()
     {
-        Header = header;
-        _content.SelectionChanged += selectionChanged;
-        _content.SelectionChanged += ContentOnSelectionChanged;
-
-        base.Content = _content;
+        _comboBox.SelectionChanged += ComboBox_SelectionChanged;
+        Content = _comboBox;
     }
 
-    private void ContentOnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    public required IEnumerable<T> Items
     {
-        try
+        get => (IEnumerable<T>)_comboBox.ItemsSource;
+        set => _comboBox.ItemsSource = value;
+    }
+
+    public required Func<T, string> DisplayFunc
+    {
+        init
         {
-            SelectedId = e.AddedItems[0].As<ComboBoxItem>()!.GetId();
-        }
-        catch (Exception exception)
-        {
-            Trace.TraceError(exception.Message);
-            Debugger.Log(0, "Error", exception.Message);
-            Debugger.Break();
+            _comboBox.DisplayMemberPath = nameof(ComboBoxItem.Content);
+            _comboBox.ItemTemplate = CreateDataTemplate(value);
         }
     }
 
-    public Guid SelectedId { get; private set; } = Guid.Empty;
+    public required Action<T> SelectionChangedAction { get; init; }
 
-    public void CreateAndAddItem(Guid id, string value)
+    private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        var item = CreateItem(id, value);
-        _content.AddItem(item);
-    }
-
-    private ComboBoxItem CreateItem(Guid id, string value)
-    {
-        var item = new ComboBoxItem();
-        item.Content = value;
-        item.SetId(id);
-        return item;
-    }
-}
-
-public class Dropdown<T> : ContentControl
-{
-    private readonly Dropdown _dropdown;
-    private readonly IEnumerable<T> _items;
-    private readonly Func<T, Guid> _idMember;
-
-    public Dropdown(string header, SelectionChangedEventHandler selectionChanged, IEnumerable<T> items, Func<T, string> displayMember, Func<T, Guid> idMember)
-    {
-        _items = items;
-        _idMember = idMember;
-        _dropdown = new Dropdown(header, selectionChanged);
-
-        foreach (var item in _items)
+        if (_comboBox.SelectedItem is T selectedItem && SelectionChangedAction != null)
         {
-            _dropdown.CreateAndAddItem(idMember(item), displayMember(item));
+            SelectionChangedAction(selectedItem);
         }
-        
-        Content = _dropdown;
     }
-    
-    public Guid SelectedId => _dropdown.SelectedId;
-    
-    public T SelectedItem => _items.Single(x => _idMember(x) == SelectedId);
+
+    private DataTemplate CreateDataTemplate(Func<T, string> displayFunc)
+    {
+        var dataTemplate = new DataTemplate(typeof(T));
+        var factory = new FrameworkElementFactory(typeof(TextBlock));
+        factory.SetBinding(TextBlock.TextProperty, new System.Windows.Data.Binding
+        {
+            Converter = new FuncValueConverter<T, string>(displayFunc),
+            Mode = System.Windows.Data.BindingMode.OneWay
+        });
+        dataTemplate.VisualTree = factory;
+        return dataTemplate;
+    }
+
+    // Converter for converting the Func<T, string> to a binding-friendly format
+    private class FuncValueConverter<TInput, TOutput> : System.Windows.Data.IValueConverter
+    {
+        private readonly Func<TInput, TOutput> _func;
+
+        public FuncValueConverter(Func<TInput, TOutput> func)
+        {
+            _func = func;
+        }
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return value is TInput input ? _func(input) : default;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

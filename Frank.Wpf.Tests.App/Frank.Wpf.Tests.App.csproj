@@ -16,6 +16,7 @@
       <ProjectReference Include="..\Frank.Wpf.Controls.Pages\Frank.Wpf.Controls.Pages.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Controls.PdfViewer\Frank.Wpf.Controls.PdfViewer.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Controls.RoslynScript\Frank.Wpf.Controls.RoslynScript.csproj" />
+      <ProjectReference Include="..\Frank.Wpf.Controls.SearchableList\Frank.Wpf.Controls.SearchableList.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Controls.SimpleInputs\Frank.Wpf.Controls.SimpleInputs.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Core\Frank.Wpf.Core.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Dialogs\Frank.Wpf.Dialogs.csproj" />

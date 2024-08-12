@@ -102,7 +102,7 @@ public class ConsoleWindow : Window
             }
         }
 
-        private void TextChanged(object o, TextChangedEventArgs args)
+        private void TextChanged(TextChangedEvent textChangedEvent)
         {
             _text = _textInput.Content;
         }

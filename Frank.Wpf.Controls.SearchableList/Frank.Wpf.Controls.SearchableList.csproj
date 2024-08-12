@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Frank.Wpf.Controls.SimpleInputs\Frank.Wpf.Controls.SimpleInputs.csproj" />
+    </ItemGroup>
+
+</Project>

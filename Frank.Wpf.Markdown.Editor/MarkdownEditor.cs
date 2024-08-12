@@ -1,6 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
+﻿using System.Windows.Controls;
 using Frank.Wpf.Controls.Code;
 using ICSharpCode.AvalonEdit.Highlighting;
 
