@@ -43,5 +43,11 @@ public class DefaultWindow : MainWindow
             var window = new SearchableSelectionListWindow();
             window.Show();
         });
+        
+        _windowButtons.AddButton("Show Key-Value Pair Editor Window", (sender, args) =>
+        {
+            var window = new KvpEditorWindow();
+            window.Show();
+        });
     }
 }

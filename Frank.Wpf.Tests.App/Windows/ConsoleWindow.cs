@@ -102,9 +102,9 @@ public class ConsoleWindow : Window
             }
         }
 
-        private void TextChanged(TextChangedEvent textChangedEvent)
+        private void TextChanged(string? text)
         {
-            _text = _textInput.Content;
+            _text = text ?? string.Empty;
         }
     }
 }

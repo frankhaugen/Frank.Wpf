@@ -26,7 +26,7 @@ public sealed class SearchableSelectionList<T> : UserControl
             if (DisplayFunc != null)
             {
                 _listBox.FilterFunc = item => DisplayFunc(item)
-                    .Contains(x.SearchText ?? string.Empty, StringComparison.InvariantCultureIgnoreCase);
+                    .Contains(x ?? string.Empty, StringComparison.InvariantCultureIgnoreCase);
             }
         });
 
@@ -86,7 +86,7 @@ public sealed class SearchableSelectionList<T> : UserControl
             _listBox.SelectionChangedAction = item =>
             {
                 _groupBox.Content = new TextBlock { Text = DisplayFunc(item) };
-                value?.Invoke(item);
+                value.Invoke(item);
             };
         }
     }

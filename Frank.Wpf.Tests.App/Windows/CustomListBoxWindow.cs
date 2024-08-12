@@ -31,7 +31,7 @@ public class CustomListBoxWindow : Window
         
         _searchBox = new SearchBox("Search", x =>
         {
-            _listBox.FilterFunc = item => item.Name.Contains(x.SearchText ?? string.Empty, StringComparison.InvariantCultureIgnoreCase);
+            _listBox.FilterFunc = item => item.Name.Contains(x ?? string.Empty, StringComparison.InvariantCultureIgnoreCase);
         });
         
         _listBox.SelectionChangedAction = item =>

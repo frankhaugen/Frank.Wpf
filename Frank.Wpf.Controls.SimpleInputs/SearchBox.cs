@@ -6,10 +6,10 @@ public class SearchBox : GroupBox
 {
     private readonly TextBox _textBox = new();
 
-    public SearchBox(string header, Action<SearchTextChangedEvent> searchTextChanged)
+    public SearchBox(string header, Action<string?> searchTextChanged)
     {
         Header = header;
-        _textBox.TextChanged += (_, _) => searchTextChanged(new SearchTextChangedEvent(_textBox.Text));
+        _textBox.TextChanged += (_, _) => searchTextChanged(_textBox.Text);
         Content = _textBox;
     }
 }

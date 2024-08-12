@@ -1,32 +1,33 @@
 ﻿using System.Windows.Controls;
-using Frank.Wpf.Core;
 
 namespace Frank.Wpf.Controls.SimpleInputs;
 
-public class TextInput : GroupBox
+public class TextInput : UserControl
 {
-    private readonly TextBox _textBox;
+    private readonly SimpleTextInput _simpleTextInput;
+    private readonly GroupBox _groupBox;
     
-    public TextInput(string header, Action<TextChangedEvent> textChanged) : this(header, null, textChanged) 
+    public TextInput(string header, Action<string?> textChanged) : this(header, null, textChanged) 
     {
     }
 
-    public TextInput(string header, string? text, Action<TextChangedEvent> textChanged)
+    public TextInput(string header, string? text, Action<string?> textChanged)
     {
-        Header = header;
-
-        _textBox = new TextBox();
-        _textBox.Text = text;
-        _textBox.TextChanged += (sender, args) =>
+        _simpleTextInput = new SimpleTextInput(text, textChanged);
+        _groupBox = new GroupBox
         {
-            var oldText = args.OriginalSource.As<TextBox>()!.Text;
-            var newText = _textBox.Text;
-            textChanged(new TextChangedEvent(oldText, newText));
+            Header = header,
+            Content = _simpleTextInput
         };
-        base.Content = _textBox;
+
+        Content = _groupBox;
     }
 
-    public new string Content => _textBox.Text;
+    public string Text
+    {
+        get => _simpleTextInput.Text;
+        set => _simpleTextInput.Text = value;
+    }
 
-    public void Clear() => _textBox.Clear();
+    public void Clear() => _simpleTextInput.Clear();
 }
