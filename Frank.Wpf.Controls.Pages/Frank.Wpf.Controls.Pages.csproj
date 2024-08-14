@@ -3,4 +3,8 @@
     <PropertyGroup>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Frank.Wpf.Core\Frank.Wpf.Core.csproj" />
+    </ItemGroup>
+
 </Project>

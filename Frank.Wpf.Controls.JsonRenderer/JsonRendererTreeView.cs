@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.ComponentModel;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -6,7 +7,8 @@ using System.Windows.Media;
 
 namespace Frank.Wpf.Controls.JsonRenderer;
 
-internal class JsonRendererTreeView : TreeView
+[EditorBrowsable(EditorBrowsableState.Never)]
+public class JsonRendererTreeView : TreeView
 {
     private JsonElement? _selectedElement;
     private JsonDocument? Document { get; set; }

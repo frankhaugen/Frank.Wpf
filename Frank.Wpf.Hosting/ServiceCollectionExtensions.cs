@@ -19,7 +19,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddWindow<T>(this IServiceCollection services) where T : Window
     {
         services.AddTransient<T>();
-        services.AddTransient<Window,    T>(provider => provider.GetRequiredService<T>());
+        services.AddTransient<Window, T>(provider => provider.GetRequiredService<T>());
         return services;
     }
     

@@ -17,4 +17,9 @@ public class CodeArea : ICSharpCode.AvalonEdit.TextEditor
         WordWrap = true;
         VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
     }
+    
+    public void Beautify(ICodeBeautifier codeBeautifier)
+    {
+        Text = codeBeautifier.Beautify(Text);
+    }
 }

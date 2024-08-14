@@ -18,8 +18,7 @@ public class DefaultWindow : MainWindow
         
         Title = "Frank.Wpf.Tests.App";
         Content = _windowButtons;
-        Width = defaultWidth;
-        Height = defaultHeight;
+        SizeToContent = SizeToContent.WidthAndHeight;
         WindowStartupLocation = defaultPosition;
         
         _windowButtons.AddButton("Show SQL Runner", (sender, args) =>
@@ -91,6 +90,72 @@ public class DefaultWindow : MainWindow
         _windowButtons.AddButton("Show Dropdown Window", (sender, args) =>
         {
             var window = new DropdownWindow
+            {
+                Width = defaultWidth,
+                Height = defaultHeight,
+                WindowStartupLocation = defaultPosition
+            };
+            window.Show();
+        });
+        
+        _windowButtons.AddButton("Show Paged Tab Control Window", (sender, args) =>
+        {
+            var window = new PagedTabControlWindow
+            {
+                Width = defaultWidth,
+                Height = defaultHeight,
+                WindowStartupLocation = defaultPosition
+            };
+            window.Show();
+        });
+        
+        _windowButtons.AddButton("Show Big Text Input Window", (sender, args) =>
+        {
+            var window = new BigTextInputWindow
+            {
+                Width = defaultWidth,
+                Height = defaultHeight,
+                WindowStartupLocation = defaultPosition
+            };
+            window.Show();
+        });
+        
+        _windowButtons.AddButton("Show Text Box With Line Numbers Window", (sender, args) =>
+        {
+            var window = new TextBoxWithLineNumbersWindow
+            {
+                Width = defaultWidth,
+                Height = defaultHeight,
+                WindowStartupLocation = defaultPosition
+            };
+            window.Show();
+        });
+        
+        _windowButtons.AddButton("Show Text Label Experimentation Window", (sender, args) =>
+        {
+            var window = new TextLabelExperimentationWindow
+            {
+                Width = defaultWidth,
+                Height = defaultHeight,
+                WindowStartupLocation = defaultPosition
+            };
+            window.Show();
+        });
+        
+        _windowButtons.AddButton("Show Text Completion Window", (sender, args) =>
+        {
+            var window = new TextCompletionWindow
+            {
+                Width = defaultWidth,
+                Height = defaultHeight,
+                WindowStartupLocation = defaultPosition
+            };
+            window.Show();
+        });
+        
+        _windowButtons.AddButton("Show Code Window", (sender, args) =>
+        {
+            var window = new CodeWindow
             {
                 Width = defaultWidth,
                 Height = defaultHeight,

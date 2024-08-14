@@ -2,22 +2,32 @@
 
 namespace Frank.Wpf.Controls.SimpleInputs;
 
-public class TextLabel : GroupBox
+public class TextLabel : BaseControl
 {
     private readonly Label _label;
-    private string _text;
 
-    public TextLabel(string header, string text)
+    public TextLabel()
     {
-        Header = header;
-        _text = text;
-        _label = new Label();
-        _label.Content = _text;
-        _label.Height = 32;
-        base.Content = _label;
+        _label = new Label
+        {
+            Height = 32
+        };
+        Content = _label;
+    }
+    
+    public double FontSize
+    {
+        get => _label.FontSize;
+        set => _label.FontSize = value;
+    }
+    
+    public double Height
+    {
+        get => _label.Height;
+        set => _label.Height = value;
     }
 
-    public new string Content
+    public string Text
     {
         get => _label.Content as string ?? string.Empty;
         set => _label.Content = value;

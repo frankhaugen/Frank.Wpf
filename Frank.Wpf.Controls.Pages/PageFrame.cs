@@ -16,9 +16,15 @@ public class PageFrame : Frame
         NavigationUIVisibility = NavigationUIVisibility.Hidden;
     }
 
+    public Page Page
+    {
+        get => Content as Page ?? throw new InvalidOperationException();
+        set => Content = value;
+    }
+
     /// <summary>
     /// Sets the page to be displayed in the frame.
     /// </summary>
     /// <param name="page"></param>
-    public void SetPage(Page page) => Content = page;
+    public void SetPage(Page page) => Page = page;
 }

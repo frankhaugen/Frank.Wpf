@@ -47,6 +47,7 @@ public class WpfHostBuilder
         Services.AddSingleton<IWindowFactory, WindowFactory>();
         Services.AddSingleton<IWpfHostLifetime, WpfHostLifetime>();
         Services.AddSingleton<IApplicationCache, ApplicationCache>();
+        Services.AddSingleton<IPageFactory, PageFactory>();
         
         // Add the services' collection to the services' collection. This is used to resolve services from the serviceprovider after the host is built.
         // This is a workaround to resolve services from the serviceprovider after the host is built.

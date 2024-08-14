@@ -7,4 +7,8 @@
       <ProjectReference Include="..\Frank.Wpf.Controls.SimpleInputs\Frank.Wpf.Controls.SimpleInputs.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Frank.Http" Version="1.1.0" />
+    </ItemGroup>
+
 </Project>

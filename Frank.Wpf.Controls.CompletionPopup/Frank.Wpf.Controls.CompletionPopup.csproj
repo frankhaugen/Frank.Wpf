@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Description>A WPF control that provides a completion popup for text editors.</Description>
+    </PropertyGroup>
+
+</Project>
