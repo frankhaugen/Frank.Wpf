@@ -25,6 +25,17 @@ public class Dropdown<T> : UserControl
     }
 
     public required Action<T> SelectionChangedAction { get; init; }
+    
+    public void SetSelectedItem(T item)
+    {
+        // Ensure the item is in the list
+        if (!Items.Contains(item))
+            throw new ArgumentException("Item is not in the list of items");
+        
+        _comboBox.SelectedItem = item;
+    }
+
+    public T? SelectedItem => _comboBox.SelectedItem is T item ? item : default;
 
     private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
