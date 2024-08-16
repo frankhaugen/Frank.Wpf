@@ -62,6 +62,12 @@ namespace Frank.Wpf.Controls.SimpleInputs
             Content = scrollViewer;
 
             UpdateLineNumbers();
+            
+            // Scroll to the left when the control is loaded
+            Loaded += (s, e) =>
+            {
+                scrollViewer.ScrollToHorizontalOffset(0);
+            };
         }
         
         public void Clear() => _textBox.Clear();
@@ -132,5 +138,7 @@ namespace Frank.Wpf.Controls.SimpleInputs
             var lines = Enumerable.Range(1, lineCount).Select(i => i.ToString()).ToArray();
             _lineNumbers.Text = string.Join(Environment.NewLine, lines);
         }
+
+        public event Action TextChanged;
     }
 }

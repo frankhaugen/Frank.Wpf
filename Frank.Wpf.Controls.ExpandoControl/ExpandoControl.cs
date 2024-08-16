@@ -7,6 +7,6 @@ public class ExpandoControl : ContentControl
 {
     static ExpandoControl()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(ExpandoControl), new FrameworkPropertyMetadata(typeof(ExpandoControl)));
+        
     }
 }

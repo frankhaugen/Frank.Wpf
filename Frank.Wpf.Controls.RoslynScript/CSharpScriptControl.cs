@@ -1,99 +1,142 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Controls;
+using Frank.Wpf.Controls.SimpleInputs;
 
 namespace Frank.Wpf.Controls.RoslynScript;
 
-public class CSharpScriptControl : ContentControl
+public class CSharpScriptControl : UserControl
 {
-    private StackPanel _stackPanel = new();
-    private CheckBox _autorunCheckBox;
-    private TextBox _inputTextBox;
-    private Button _runButton;
-    private TextBlock _outputTextBlock;
-    
-    private ScriptRunner _scriptRunner = new();
+    private readonly TextBoxWithLineNumbers _outputTextBlock;
+
+    private readonly ScriptRunner _scriptRunner;
     private string _code;
-    
+    private bool _autorun;
+    private readonly MenuItem _runMenuItem;
+
     public CSharpScriptControl()
     {
-        _autorunCheckBox = CreateAutorunCheckBox();
+        var scriptRunnerBuilder = new ScriptRunnerBuilder()
+            .WithReference(typeof(object).Assembly)
+            .WithReference(typeof(Enumerable).Assembly)
+            .WithReference(typeof(MessageBox).Assembly)
+            .WithReference(typeof(Enumerable).Assembly)
+            .WithReference(typeof(IQueryable).Assembly);
+        _scriptRunner = scriptRunnerBuilder.Build();
+        var menu = new Menu();
+        _runMenuItem = new MenuItem { Header = "Run" };
+        _runMenuItem.Click += async (sender, args) => await ExecuteScriptAsync();
+        menu.Items.Add(_runMenuItem);
+        
+        var autorunCheckBox = CreateAutorunCheckBox();
+        var autorunMenuItem = new MenuItem { Header = autorunCheckBox };
+        menu.Items.Add(autorunMenuItem);
+        
         _outputTextBlock = CreateOutputTextBlock();
-        _runButton = CreateRunButton();
-        _inputTextBox = CreateInputTextBox();
+        var inputTextBox = CreateInputTextBox();
         
-        _stackPanel.Children.Add(_autorunCheckBox);
-        _stackPanel.Children.Add(_inputTextBox);
-        _stackPanel.Children.Add(_runButton);
-        _stackPanel.Children.Add(_outputTextBlock);
+        var inputGroupBox = new GroupBox
+        {
+            Header = "Input",
+            Content = inputTextBox
+        };
         
-        Content = _stackPanel;
+        var outputGroupBox = new GroupBox
+        {
+            Header = "Output",
+            Content = _outputTextBlock
+        };
+        
+        var stackPanel = new StackPanel()
+        {
+            Orientation = Orientation.Horizontal
+        };
+        stackPanel.Children.Add(inputGroupBox);
+        stackPanel.Children.Add(outputGroupBox);
+
+        var outerStackPanel = new StackPanel();
+        outerStackPanel.Children.Add(menu);
+        outerStackPanel.Children.Add(stackPanel);
+        
+        Content = outerStackPanel;
     }
-    
+
     private CheckBox CreateAutorunCheckBox()
     {
-        var checkBox = new CheckBox();
-        checkBox.Content = "Autorun";
-        checkBox.IsChecked = false;
-        checkBox.Checked += (sender, args) => _runButton.IsEnabled = false;
-        checkBox.Unchecked += (sender, args) => _runButton.IsEnabled = true;
-        
+        var checkBox = new CheckBox
+        {
+            Content = "Autorun",
+            IsChecked = false
+        };
+
+        checkBox.Checked += (sender, args) =>
+        {
+            _autorun = true;
+            _runMenuItem.IsEnabled = false;
+        };
+
+        checkBox.Unchecked += (sender, args) =>
+        {
+            _autorun = false;
+            _runMenuItem.IsEnabled = true;
+        };
+
         return checkBox;
     }
-    
-    private TextBlock CreateOutputTextBlock()
+
+    private TextBoxWithLineNumbers CreateOutputTextBlock()
     {
-        var textBlock = new TextBlock();
-        textBlock.Text = "Output";
-        return textBlock;
+        return new TextBoxWithLineNumbers() { Text = "Output" };
     }
-    
-    private Button CreateRunButton()
+
+    private TextBoxWithLineNumbers CreateInputTextBox()
     {
-        var button = new Button();
-        button.Content = "Run";
-        button.Click += Button_Click;
-        return button;
-    }
-    
-    private TextBox CreateInputTextBox()
-    {
-        var textBox = new TextBox();
-        textBox.Text = "return \"Hello, \nWorld!\";";
-        textBox.AcceptsReturn = true;
-        textBox.AcceptsTab = true;
-        textBox.TextWrapping = TextWrapping.Wrap;
-        textBox.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-        
-        textBox.TextChanged += (sender, args) =>
+        var textBox = new TextBoxWithLineNumbers
         {
-            if (_autorunCheckBox.IsChecked == true)
+            TextWrapping = TextWrapping.Wrap,
+        };
+
+        textBox.TextChanged += async () =>
+        {
+            _code = textBox.Text;
+            if (_autorun)
             {
-                _code = textBox.Text;
-                try
-                {
-                    var result = _scriptRunner.RoslynScriptingAsync<string>(_code).Result;
-                    _outputTextBlock.Text = result;
-                }
-                catch (Exception exception)
-                {
-                    // Do nothing
-                }
+                await ExecuteScriptAsync();
             }
         };
+
         return textBox;
     }
-    
-    private void Button_Click(object sender, RoutedEventArgs e)
+
+    private async Task ExecuteScriptAsync()
     {
-        _code = _inputTextBox.Text;
         try
         {
-            var result = _scriptRunner.RoslynScriptingAsync<string>(_code).Result;
-            _outputTextBlock.Text = result;
+            var result = await _scriptRunner.RunAsync(_code);
+            
+            var resultType = result?.GetType();
+            if (resultType == null)
+            {
+                _outputTextBlock.Text = "null";
+                return;
+            }
+            
+            if (resultType == typeof(string))
+            {
+                _outputTextBlock.Text = result?.ToString() ?? "null";
+                return;
+            }
+            
+            var jsonDocument = JsonSerializer.SerializeToDocument(result);
+            var jsonElement = jsonDocument.RootElement;
+            var prettyPrintedJson = JsonSerializer.Serialize(jsonElement, new JsonSerializerOptions { WriteIndented = true, Converters = { new JsonStringEnumConverter()}});
+            
+            _outputTextBlock.Text = prettyPrintedJson;
         }
-        catch (Exception exception)
+        catch (Exception ex)
         {
-            _outputTextBlock.Text = exception.Message;
+            _outputTextBlock.Text = ex.Message;
         }
     }
 }

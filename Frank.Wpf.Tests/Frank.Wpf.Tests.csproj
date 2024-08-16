@@ -25,6 +25,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Frank.Wpf.Controls.CompletionPopup\Frank.Wpf.Controls.CompletionPopup.csproj" />
+      <ProjectReference Include="..\Frank.Wpf.Controls.CSharpRenderer\Frank.Wpf.Controls.CSharpRenderer.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Controls.JsonRenderer\Frank.Wpf.Controls.JsonRenderer.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Tests.App\Frank.Wpf.Tests.App.csproj" />
     </ItemGroup>

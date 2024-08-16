@@ -1,30 +1,59 @@
-﻿using System.Reflection;
-using Microsoft.CodeAnalysis.CSharp.Scripting;
+﻿using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 
 namespace Frank.Wpf.Controls.RoslynScript;
 
-public class ScriptRunner
+public class ScriptRunner : ScriptRunnerBase
 {
-    private readonly ScriptOptions _scriptOptions;
+    internal ScriptRunner(ScriptOptions scriptOptions, Dictionary<string, object> globals)
+        : base(scriptOptions, globals) { }
 
-    public ScriptRunner()
+    public object? Run(string code)
+        => RunInternalAsync(code, false).GetAwaiter().GetResult();
+
+    public Task<object?> RunAsync(string code)
+        => RunInternalAsync(code, true);
+
+    private async Task<object?> RunInternalAsync(string code, bool isAsync)
     {
-        _scriptOptions = ScriptOptions.Default
-            .AddReferences(typeof(string).Assembly)
-            .AddImports("System");
+        var script = CSharpScript.Create(code, ScriptOptions, globalsType: typeof(ScriptGlobals));
+        var state = isAsync
+            ? await script.RunAsync(new ScriptGlobals(Globals))
+            : script.RunAsync(new ScriptGlobals(Globals)).GetAwaiter().GetResult();
+
+        return state?.ReturnValue;
     }
 
-    public async Task<T?> RoslynScriptingAsync<T>(string code, params Assembly[] assemblies)
+    public override Type GetExpectedOutputType()
     {
-        _scriptOptions.AddReferences(assemblies);
+        return typeof(object); // Non-generic returns object
+    }
+}
 
-        var script = CSharpScript.Create<T>(code, _scriptOptions);
+public class ScriptRunner<T> : ScriptRunnerBase
+{
+    internal ScriptRunner(ScriptOptions scriptOptions, Dictionary<string, object> globals)
+        : base(scriptOptions, globals) { }
 
-        var state = await script.RunAsync();
+    public T? Run(string code)
+        => RunInternalAsync(code, false).GetAwaiter().GetResult();
 
-        var result = state.ReturnValue;
+    public Task<T?> RunAsync(string code)
+        => RunInternalAsync(code, true);
 
-        return result;
+    private async Task<T?> RunInternalAsync(string code, bool isAsync)
+    {
+        var script = CSharpScript.Create<T>(code, ScriptOptions, globalsType: typeof(ScriptGlobals));
+        var state = isAsync
+            ? await script.RunAsync(new ScriptGlobals(Globals))
+            : script.RunAsync(new ScriptGlobals(Globals)).GetAwaiter().GetResult();
+
+        var returnValue = state.ReturnValue;
+        return returnValue == null ? default : (T)returnValue;
+    }
+
+    public override Type GetExpectedOutputType()
+    {
+        return typeof(T); // Generic returns the type T
     }
 }
