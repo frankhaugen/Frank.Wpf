@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using Frank.Wpf.Core.Beatification;
 using ICSharpCode.AvalonEdit.Highlighting;
 
 namespace Frank.Wpf.Controls.Code;
@@ -18,7 +19,7 @@ public class CodeArea : ICSharpCode.AvalonEdit.TextEditor
         VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
     }
     
-    public void Beautify(ICodeBeautifier codeBeautifier)
+    public void Beautify(ITextBeautifier codeBeautifier)
     {
         Text = codeBeautifier.Beautify(Text);
     }

@@ -32,7 +32,7 @@ public class SearchableSelectionListWindow : Window
             Items = items,
             SelectionChangedAction = item =>
             {
-                _jsonRenderer.Render(JsonSerializer.Serialize(item, new JsonSerializerOptions { WriteIndented = true, PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Converters = { new JsonStringEnumConverter() }}));
+                _jsonRenderer.Document = JsonSerializer.SerializeToDocument(item, new JsonSerializerOptions { WriteIndented = true, PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Converters = { new JsonStringEnumConverter() }});
             }
         };
         

@@ -25,8 +25,8 @@ public class DefaultWindow : MainWindow
         {
             var window = new SqlLiteWindow
             {
-                Width = defaultWidth,
-                Height = defaultHeight,
+                MinWidth = defaultWidth,
+                MinHeight = defaultHeight,
                 WindowStartupLocation = defaultPosition
             };
             window.Show();
@@ -36,8 +36,8 @@ public class DefaultWindow : MainWindow
         {
             var window = new JsonWindow
             {
-                Width = defaultWidth,
-                Height = defaultHeight,
+                MinWidth = defaultWidth,
+                MinHeight = defaultHeight,
                 WindowStartupLocation = defaultPosition
             };
             window.Show();
@@ -47,8 +47,8 @@ public class DefaultWindow : MainWindow
         {
             var window = new ConsoleWindow
             {
-                Width = defaultWidth,
-                Height = defaultHeight,
+                MinWidth = defaultWidth,
+                MinHeight = defaultHeight,
                 WindowStartupLocation = defaultPosition
             };
             window.Show();
@@ -58,8 +58,8 @@ public class DefaultWindow : MainWindow
         {
             var window = new CustomListBoxWindow
             {
-                Width = defaultWidth,
-                Height = defaultHeight,
+                MinWidth = defaultWidth,
+                MinHeight = defaultHeight,
                 WindowStartupLocation = defaultPosition
             };
             window.Show();
@@ -69,8 +69,8 @@ public class DefaultWindow : MainWindow
         {
             var window = new SearchableSelectionListWindow
             {
-                Width = defaultWidth,
-                Height = defaultHeight,
+                MinWidth = defaultWidth,
+                MinHeight = defaultHeight,
                 WindowStartupLocation = defaultPosition
             };
             window.Show();
@@ -80,8 +80,8 @@ public class DefaultWindow : MainWindow
         {
             var window = new KvpEditorWindow
             {
-                Width = defaultWidth,
-                Height = defaultHeight,
+                MinWidth = defaultWidth,
+                MinHeight = defaultHeight,
                 WindowStartupLocation = defaultPosition
             };
             window.Show();
@@ -91,8 +91,8 @@ public class DefaultWindow : MainWindow
         {
             var window = new DropdownWindow
             {
-                Width = defaultWidth,
-                Height = defaultHeight,
+                MinWidth = defaultWidth,
+                MinHeight = defaultHeight,
                 WindowStartupLocation = defaultPosition
             };
             window.Show();
@@ -102,8 +102,8 @@ public class DefaultWindow : MainWindow
         {
             var window = new PagedTabControlWindow
             {
-                Width = defaultWidth,
-                Height = defaultHeight,
+                MinWidth = defaultWidth,
+                MinHeight = defaultHeight,
                 WindowStartupLocation = defaultPosition
             };
             window.Show();
@@ -113,8 +113,8 @@ public class DefaultWindow : MainWindow
         {
             var window = new BigTextInputWindow
             {
-                Width = defaultWidth,
-                Height = defaultHeight,
+                MinWidth = defaultWidth,
+                MinHeight = defaultHeight,
                 WindowStartupLocation = defaultPosition
             };
             window.Show();
@@ -124,8 +124,8 @@ public class DefaultWindow : MainWindow
         {
             var window = new TextBoxWithLineNumbersWindow
             {
-                Width = defaultWidth,
-                Height = defaultHeight,
+                MinWidth = defaultWidth,
+                MinHeight = defaultHeight,
                 WindowStartupLocation = defaultPosition
             };
             window.Show();
@@ -135,8 +135,8 @@ public class DefaultWindow : MainWindow
         {
             var window = new TextLabelExperimentationWindow
             {
-                Width = defaultWidth,
-                Height = defaultHeight,
+                MinWidth = defaultWidth,
+                MinHeight = defaultHeight,
                 WindowStartupLocation = defaultPosition
             };
             window.Show();
@@ -146,8 +146,8 @@ public class DefaultWindow : MainWindow
         {
             var window = new TextCompletionWindow
             {
-                Width = defaultWidth,
-                Height = defaultHeight,
+                MinWidth = defaultWidth,
+                MinHeight = defaultHeight,
                 WindowStartupLocation = defaultPosition
             };
             window.Show();
@@ -157,8 +157,19 @@ public class DefaultWindow : MainWindow
         {
             var window = new CodeWindow
             {
-                Width = defaultWidth,
-                Height = defaultHeight,
+                MinWidth = defaultWidth,
+                MinHeight = defaultHeight,
+                WindowStartupLocation = defaultPosition
+            };
+            window.Show();
+        });
+        
+        _windowButtons.AddButton("Show Xml Window", (sender, args) =>
+        {
+            var window = new XmlWindow
+            {
+                MinWidth = defaultWidth,
+                MinHeight = defaultHeight,
                 WindowStartupLocation = defaultPosition
             };
             window.Show();

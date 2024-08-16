@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Frank.Wpf.Core.Beatification;
 
 namespace Frank.Wpf.Tests.App.Windows;
 
@@ -30,7 +31,7 @@ public class CodeWindow : Window
                         }
                         """;
         
-        var codeBeautifier = new Frank.Wpf.Controls.Code.JsonBeautifier();
+        var codeBeautifier = new JsonBeautifier();
         
         var beautifyButton = new Button
         {

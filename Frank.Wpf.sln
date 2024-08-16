@@ -58,6 +58,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.Wpf.Controls.Searchab
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.Wpf.Controls.CompletionPopup", "Frank.Wpf.Controls.CompletionPopup\Frank.Wpf.Controls.CompletionPopup.csproj", "{33FB68C5-B9DF-443E-B9FB-9EF8FEF4A668}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frank.Wpf.Controls.XmlRenderer", "Frank.Wpf.Controls.XmlRenderer\Frank.Wpf.Controls.XmlRenderer.csproj", "{BB9161CA-F8DE-49E9-B6E1-92AA52962906}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -155,5 +157,9 @@ Global
 		{33FB68C5-B9DF-443E-B9FB-9EF8FEF4A668}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33FB68C5-B9DF-443E-B9FB-9EF8FEF4A668}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33FB68C5-B9DF-443E-B9FB-9EF8FEF4A668}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB9161CA-F8DE-49E9-B6E1-92AA52962906}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB9161CA-F8DE-49E9-B6E1-92AA52962906}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB9161CA-F8DE-49E9-B6E1-92AA52962906}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB9161CA-F8DE-49E9-B6E1-92AA52962906}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,4 @@
-﻿namespace Frank.Wpf.Controls.Code;
+﻿namespace Frank.Wpf.Core.Beatification;
 
 public class SimpleTrigger : IBeautificationTrigger
 {

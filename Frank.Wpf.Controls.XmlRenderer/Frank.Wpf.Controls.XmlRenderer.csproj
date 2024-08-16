@@ -2,12 +2,9 @@
 
     <PropertyGroup>
     </PropertyGroup>
-    
+
     <ItemGroup>
-        <PackageReference Include="AvalonEdit" Version="6.3.0.90" />
-    </ItemGroup>
-    
-    <ItemGroup>
+      <ProjectReference Include="..\Frank.Wpf.Controls.SimpleInputs\Frank.Wpf.Controls.SimpleInputs.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Core\Frank.Wpf.Core.csproj" />
     </ItemGroup>
 

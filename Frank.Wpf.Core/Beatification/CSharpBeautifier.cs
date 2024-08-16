@@ -1,6 +1,6 @@
-﻿namespace Frank.Wpf.Controls.Code;
+﻿namespace Frank.Wpf.Core.Beatification;
 
-public class CSharpBeautifier : CodeBeautifierBase
+public class CSharpBeautifier : TextBeautifierBase
 {
     public override string Beautify(string code)
     {
