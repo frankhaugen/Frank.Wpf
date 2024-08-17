@@ -7,64 +7,37 @@ namespace Frank.Wpf.Controls.SearchableList;
 /// <summary>
 /// A list that allows searching and selecting items.
 /// </summary>
-/// <typeparam name="T"></typeparam>
+/// <typeparam name="T">The type of the items in the list.</typeparam>
 public sealed class SearchableSelectionList<T> : UserControl
 {
     private readonly StackPanel _stackPanel = new();
-    private readonly SearchBox _searchBox;
+    private readonly SearchBox _searchBox = new() { Header = "Search" };
     private readonly GroupBox _groupBox = new() { Header = "Selected" };
     private readonly ScrollViewer _scrollViewer = new();
     private readonly CustomListBox<T> _listBox;
-    private Func<T,string> _displayFunc;
 
     /// <summary>
-    /// Creates a new instance of <see cref="SearchableSelectionList{T}"/>.
+    /// Initializes a new instance of <see cref="SearchableSelectionList{T}"/>.
     /// </summary>
     public SearchableSelectionList()
     {
-        _listBox = new CustomListBox<T>()
-        {
-            DisplayFunc = x => _displayFunc(x),
-            FilterFunc = x => FilterFunc(x)
-        };
-        
-        _listBox.SelectionChanged += x =>
-        {
-            _groupBox.Content = _displayFunc?.Invoke(x);
-            
-            _listBox.SetSelectedItem(x);
-        };
-        
-        _searchBox = new SearchBox("Search", x =>
-        {
-            Items = _listBox.Items.Where(FilterFunc);
-        });
+        _listBox = new CustomListBox<T> ();
+
+        _listBox.SelectionChanged += OnSelectionChanged;
+
+        _searchBox.SearchTextChanged += OnSearchTextChanged;
 
         _scrollViewer.Content = _listBox;
         _stackPanel.Children.Add(_searchBox);
         _stackPanel.Children.Add(_scrollViewer);
         _stackPanel.Children.Add(_groupBox);
-        
-        Items = Array.Empty<T>();
-        
+
         MinWidth = 128;
         Content = _stackPanel;
-        
-        _listBox.SetSelectedItem(default);
-    }
-
-    private bool FilterFunc(T arg)
-    {
-        return true;
-    }
-
-    public void SetSelectedItem(T item)
-    {
-        _listBox.SetSelectedItem(item);
     }
 
     /// <summary>
-    /// The items in the list.
+    /// Gets or sets the collection of items in the list.
     /// </summary>
     public IEnumerable<T> Items
     {
@@ -73,39 +46,79 @@ public sealed class SearchableSelectionList<T> : UserControl
     }
 
     /// <summary>
-    /// The function that determines how to display an item.
+    /// Gets or sets the selected item in the list.
     /// </summary>
-    /// <remarks> Search functionality is based on this function. </remarks>
-    public required Func<T, string> DisplayFunc
+    public T? SelectedItem
     {
-        get => _displayFunc;
-        init => _displayFunc = value;
+        get => _listBox.SelectedItem;
+        set => _listBox.SetSelectedItem(value);
     }
 
     /// <summary>
-    /// This action is called when an item is selected.
+    /// Gets or sets the function used to display an item as a string.
     /// </summary>
-    public event Action<T>? SelectionChangedAction
+    public Func<T, string>? Display
     {
-        add => _listBox.SelectionChanged += value;
-        remove => _listBox.SelectionChanged -= value;
+        get => _listBox.DisplayFunc;
+        set => _listBox.DisplayFunc = value;
     }
-    
+
     /// <summary>
-    /// Determines if the search box is visible. Default is true.
+    /// Gets or sets the function used to filter items based on the search query.
+    /// </summary>
+    public Func<T, string?, bool>? Filter
+    {
+        get => (arg1, s) => _listBox.FilterFunc!.Invoke(arg1) || string.IsNullOrEmpty(s);
+        set => _listBox.FilterFunc = arg => value?.Invoke(arg, _searchBox.SearchText) ?? true;
+    }
+
+    /// <summary>
+    /// Occurs when an item is selected.
+    /// </summary>
+    public event Action<T>? SelectionChangedAction;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the search box is visible.
     /// </summary>
     public bool IsSearchBoxVisible
     {
         get => _searchBox.Visibility == Visibility.Visible;
         set => _searchBox.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
     }
-    
+
     /// <summary>
-    /// Determines if the selected item box is visible. Default is true.
+    /// Gets or sets a value indicating whether the selected item box is visible.
     /// </summary>
     public bool IsSelectedBoxVisible
     {
         get => _groupBox.Visibility == Visibility.Visible;
         set => _groupBox.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    public IEnumerable<T> DisplayedItems => _listBox.DisplayedItems;
+
+    /// <summary>
+    /// Handles changes to the search text and filters the items in the list.
+    /// </summary>
+    private void OnSearchTextChanged(string? searchText)
+    {
+        _listBox.Items = Items.Where(item => Filter(item, searchText));
+    }
+
+    /// <summary>
+    /// Handles item selection changes and updates the selected item box.
+    /// </summary>
+    private void OnSelectionChanged(T? selectedItem)
+    {
+        if (selectedItem != null)
+        {
+            _groupBox.Content = new TextBlock { Text = Display(selectedItem) };
+        }
+        else
+        {
+            _groupBox.Content = null;
+        }
+
+        SelectionChangedAction?.Invoke(selectedItem);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Frank.Wpf.Controls.SimpleInputs;
 using Frank.Wpf.Core;
 using Frank.Wpf.Core.Beatification;
@@ -48,7 +49,7 @@ public class JsonRendererControl : ContentControl
                 return;
             }
 
-            _textBoxWithLineNumbers.Text = _jsonBeautifier.Beautify(value.RootElement.ToString());
+            _textBoxWithLineNumbers.Text = _jsonBeautifier.Beautify(value?.RootElement.ToString() ?? "{}");
             _treeView = _treeViewFactory.Create(_document);
         
             _rendererTabItem.Content.As<DockPanel>()?.Children.RemoveAt(1);
@@ -67,8 +68,19 @@ public class JsonRendererControl : ContentControl
     {
         var menuBar = new Menu();
         var expansionToggleMenuItem = new MenuItem { Header = "Toggle Expand/Collapse" };
-        menuBar.Items.Add(expansionToggleMenuItem);
         expansionToggleMenuItem.Click += ToggleExpandCollapse;
+
+        var searchTextBox = new SearchBox();
+        searchTextBox.SearchTextChanged += SearchTextChanged;
+        searchTextBox.KeyDown += SearchTextBoxOnKeyDown;
+        var searchMenuItem = new MenuItem
+        {
+            Header = searchTextBox,
+            Width = 64
+        };
+        
+        menuBar.Items.Add(expansionToggleMenuItem);
+        menuBar.Items.Add(searchMenuItem);
 
         var dockPanel = new DockPanel();
         DockPanel.SetDock(menuBar, Dock.Top);
@@ -80,6 +92,26 @@ public class JsonRendererControl : ContentControl
             Header = "Document",
             Content = dockPanel
         };
+    }
+
+    private void SearchTextBoxOnKeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter)
+        {
+            SearchTextChanged((sender as SearchBox)?.SearchText);
+        }
+    }
+
+    private void SearchTextChanged(string? obj)
+    {
+        if (string.IsNullOrWhiteSpace(obj))
+        {
+            _treeViewWalker.Walk(_treeView, item => item.IsExpanded = false);
+            return;
+        }
+
+        _treeViewWalker.Walk(_treeView, item => item.IsExpanded = true);
+        _treeViewWalker.Walk(_treeView, item => item.IsExpanded = item.Header.ToString()?.Contains(obj, StringComparison.OrdinalIgnoreCase) ?? false);
     }
 
     private void ToggleExpandCollapse(object sender, RoutedEventArgs e)

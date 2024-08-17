@@ -60,7 +60,8 @@ public class XmlRendererControl : UserControl
         var expansionToggleMenuItem = new MenuItem { Header = "Toggle Expand/Collapse" };
         expansionToggleMenuItem.Click += ToggleExpandCollapse;
 
-        var searchTextBox = new SearchBox("Search", SearchTextChanged);
+        var searchTextBox = new SearchBox();
+        searchTextBox.SearchTextChanged += SearchTextChanged;
         searchTextBox.KeyDown += SearchTextBoxOnKeyDown;
         var searchMenuItem = new MenuItem
         {

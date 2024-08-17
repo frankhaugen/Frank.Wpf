@@ -19,23 +19,19 @@ public class SearchableSelectionListWindow : Window
         Width = 800;
         Height = 600;
         
-        var items = new List<Person>
+        _searchableSelectionList = new SearchableSelectionList<Person>
         {
-            new Person { Name = "Frank", Age = 30, Address = new Address { Street = "123 Oak St", City = "Anytown", State = "NY", Zip = "12345" } },
-            new Person { Name = "John", Age = 40, Address = new Address { Street = "123 Elm St", City = "Anytown", State = "NY", Zip = "12345" } },
-            new Person { Name = "Jane", Age = 50, Address = new Address { Street = "123 Main St", City = "Anytown", State = "NY", Zip = "12345" } }
+            Items = new List<Person>
+            {
+                new Person { Name = "Frank", Age = 30, Address = new Address { Street = "123 Oak St", City = "Anytown", State = "NY", Zip = "12345" } },
+                new Person { Name = "John", Age = 40, Address = new Address { Street = "123 Elm St", City = "Anytown", State = "NY", Zip = "12345" } },
+                new Person { Name = "Jane", Age = 50, Address = new Address { Street = "123 Main St", City = "Anytown", State = "NY", Zip = "12345" } }
+            },
+            Display = item => item.Name, // Custom display logic
+            Filter = (item, searchText) => searchText == null || item.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase)
         };
-        
-        _searchableSelectionList = new SearchableSelectionList<Person>()
-        {
-            DisplayFunc = item => item.Name,
-            Items = items
-        };
-        
-        _searchableSelectionList.SelectionChangedAction += item =>
-        {
-            _jsonRenderer.Document = JsonSerializer.SerializeToDocument(item, new JsonSerializerOptions { WriteIndented = true });
-        };
+
+        _searchableSelectionList.SelectionChangedAction += selectedItem => _jsonRenderer.Document = JsonSerializer.SerializeToDocument(selectedItem, new JsonSerializerOptions { WriteIndented = true, Converters = { new JsonStringEnumConverter() }});
         
         _stackPanel.Children.Add(_searchableSelectionList);
         _stackPanel.Children.Add(_jsonRenderer);
