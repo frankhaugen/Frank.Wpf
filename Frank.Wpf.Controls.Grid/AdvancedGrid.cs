@@ -20,6 +20,8 @@ public class AdvancedGrid : UserControl
             _cells[i, j] = new Cell(new CellPosition(i, j));
 
         foreach (var cell in _cells) _grid.Children.Add(cell);
+        
+        Content = _grid;
     }
     
     /// <summary>
