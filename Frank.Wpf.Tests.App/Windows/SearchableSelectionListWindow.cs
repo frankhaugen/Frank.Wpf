@@ -29,11 +29,12 @@ public class SearchableSelectionListWindow : Window
         _searchableSelectionList = new SearchableSelectionList<Person>()
         {
             DisplayFunc = item => item.Name,
-            Items = items,
-            SelectionChangedAction = item =>
-            {
-                _jsonRenderer.Document = JsonSerializer.SerializeToDocument(item, new JsonSerializerOptions { WriteIndented = true, PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Converters = { new JsonStringEnumConverter() }});
-            }
+            Items = items
+        };
+        
+        _searchableSelectionList.SelectionChangedAction += item =>
+        {
+            _jsonRenderer.Document = JsonSerializer.SerializeToDocument(item, new JsonSerializerOptions { WriteIndented = true });
         };
         
         _stackPanel.Children.Add(_searchableSelectionList);

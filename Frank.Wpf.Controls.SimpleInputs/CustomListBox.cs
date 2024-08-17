@@ -1,11 +1,17 @@
 using System.Windows;
 using System.Windows.Controls;
+using Frank.Wpf.Core;
 
 namespace Frank.Wpf.Controls.SimpleInputs;
 
 public class CustomListBox<T> : UserControl
 {
     private readonly ListBox _listBox;
+    
+    private readonly Func<T, bool> _filterFunc;
+    private readonly Func<T, string>? _displayFunc;
+    
+    private IEnumerable<T>? _items;
 
     public CustomListBox()
     {
@@ -14,99 +20,82 @@ public class CustomListBox<T> : UserControl
 
         _listBox.SelectionChanged += ListBox_SelectionChanged;
     }
-
-    public static readonly DependencyProperty ItemsProperty =
-        DependencyProperty.Register(
-            nameof(Items),
-            typeof(IEnumerable<T>),
-            typeof(CustomListBox<T>),
-            new PropertyMetadata(new List<T>(), OnItemsChanged));
-
-    public static readonly DependencyProperty DisplayFuncProperty =
-        DependencyProperty.Register(
-            nameof(DisplayFunc),
-            typeof(Func<T, string>),
-            typeof(CustomListBox<T>),
-            new PropertyMetadata(null, OnDisplayFuncChanged));
-
-    public static readonly DependencyProperty FilterFuncProperty =
-        DependencyProperty.Register(
-            nameof(FilterFunc),
-            typeof(Func<T, bool>),
-            typeof(CustomListBox<T>),
-            new PropertyMetadata(null, OnFilterFuncChanged));
-
-    public static readonly DependencyProperty SelectionChangedActionProperty =
-        DependencyProperty.Register(
-            nameof(SelectionChangedAction),
-            typeof(Action<T>),
-            typeof(CustomListBox<T>),
-            new PropertyMetadata(null));
-
+    
+    public T? SelectedItem => _listBox.SelectedItem is T item ? item : default;
+    
     public IEnumerable<T> Items
     {
-        get => (IEnumerable<T>)GetValue(ItemsProperty);
-        set => SetValue(ItemsProperty, value);
-    }
-
-    public Func<T, string> DisplayFunc
-    {
-        get => (Func<T, string>)GetValue(DisplayFuncProperty);
-        set => SetValue(DisplayFuncProperty, value);
-    }
-
-    public Func<T, bool> FilterFunc
-    {
-        get => (Func<T, bool>)GetValue(FilterFuncProperty);
-        set => SetValue(FilterFuncProperty, value);
-    }
-
-    public Action<T> SelectionChangedAction
-    {
-        get => (Action<T>)GetValue(SelectionChangedActionProperty);
-        set => SetValue(SelectionChangedActionProperty, value);
-    }
-
-    private static void OnItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        var control = (CustomListBox<T>)d;
-        control.ApplyFilter();
-    }
-
-    private static void OnDisplayFuncChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        var control = (CustomListBox<T>)d;
-        control.ApplyFilter();
-    }
-
-    private static void OnFilterFuncChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        var control = (CustomListBox<T>)d;
-        control.ApplyFilter();
-    }
-
-    private void ApplyFilter()
-    {
-        _listBox.Items.Clear();
-
-        if (Items == null || DisplayFunc == null)
+        get => _items ?? Array.Empty<T>();
+        set
         {
+            _items = value;
+            SetListBoxItems();
+        }
+    }
+    
+    public required Func<T, bool> FilterFunc
+    {
+        get => _filterFunc;
+        init
+        {
+            _filterFunc = value;
+            SetListBoxItems();
+        }
+    }
+
+    public event Action<T>? SelectionChanged;
+    
+    public required Func<T, string> DisplayFunc
+    {
+        get => _displayFunc ?? (x => x.ToString());
+        init  
+        {
+            _displayFunc = value;
+            _listBox.ItemTemplate = CreateDataTemplate(value);
+        }
+    }
+
+    public void SetSelectedItem(T? item)
+    {
+        if (item == null)
+        {
+            _listBox.SelectedItem = null;
             return;
         }
-
-        var filteredItems = FilterFunc != null ? Items.Where(FilterFunc) : Items;
-
-        foreach (var item in filteredItems)
-        {
-            _listBox.Items.Add(new ListBoxItem { Content = DisplayFunc(item), Tag = item });
-        }
+        
+        _listBox.SelectedItem = Items.FirstOrDefault(x => x.Equals(item));
+    }
+    
+    private void SetListBoxItems()
+    {
+        _listBox.Items.Clear();
+        Items.Where(FilterFunc).OrderBy(DisplayFunc).Do(item => _listBox.Items.Add(item));
     }
 
     private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (_listBox.SelectedItem is ListBoxItem selectedItem && SelectionChangedAction != null)
+        if (_listBox.SelectedItem is ListBoxItem selectedItem && SelectionChanged != null) SelectionChanged((T)selectedItem.Tag);
+    }
+    
+    private DataTemplate CreateDataTemplate(Func<T, string> displayFunc)
+    {
+        var dataTemplate = new DataTemplate(typeof(T));
+        var factory = new FrameworkElementFactory(typeof(TextBlock));
+        factory.SetBinding(TextBlock.TextProperty, new System.Windows.Data.Binding
         {
-            SelectionChangedAction((T)selectedItem.Tag);
-        }
+            Converter = new FuncValueConverter<T, string>(displayFunc),
+            Mode = System.Windows.Data.BindingMode.OneWay
+        });
+        dataTemplate.VisualTree = factory;
+        return dataTemplate;
+    }
+
+    private class FuncValueConverter<TInput, TOutput>(Func<TInput, TOutput> func) : System.Windows.Data.IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture) 
+            => value is TInput input ? func(input) : default;
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, System.Globalization.CultureInfo culture) 
+            => value is TOutput output ? output : default;
     }
 }

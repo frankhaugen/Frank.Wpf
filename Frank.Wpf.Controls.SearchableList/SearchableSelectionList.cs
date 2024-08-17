@@ -14,20 +14,30 @@ public sealed class SearchableSelectionList<T> : UserControl
     private readonly SearchBox _searchBox;
     private readonly GroupBox _groupBox = new() { Header = "Selected" };
     private readonly ScrollViewer _scrollViewer = new();
-    private readonly CustomListBox<T> _listBox = new();
+    private readonly CustomListBox<T> _listBox;
+    private Func<T,string> _displayFunc;
 
     /// <summary>
     /// Creates a new instance of <see cref="SearchableSelectionList{T}"/>.
     /// </summary>
     public SearchableSelectionList()
     {
+        _listBox = new CustomListBox<T>()
+        {
+            DisplayFunc = x => _displayFunc(x),
+            FilterFunc = x => FilterFunc(x)
+        };
+        
+        _listBox.SelectionChanged += x =>
+        {
+            _groupBox.Content = _displayFunc?.Invoke(x);
+            
+            _listBox.SetSelectedItem(x);
+        };
+        
         _searchBox = new SearchBox("Search", x =>
         {
-            if (DisplayFunc != null)
-            {
-                _listBox.FilterFunc = item => DisplayFunc(item)
-                    .Contains(x ?? string.Empty, StringComparison.InvariantCultureIgnoreCase);
-            }
+            Items = _listBox.Items.Where(FilterFunc);
         });
 
         _scrollViewer.Content = _listBox;
@@ -35,8 +45,50 @@ public sealed class SearchableSelectionList<T> : UserControl
         _stackPanel.Children.Add(_scrollViewer);
         _stackPanel.Children.Add(_groupBox);
         
+        Items = Array.Empty<T>();
+        
         MinWidth = 128;
         Content = _stackPanel;
+        
+        _listBox.SetSelectedItem(default);
+    }
+
+    private bool FilterFunc(T arg)
+    {
+        return true;
+    }
+
+    public void SetSelectedItem(T item)
+    {
+        _listBox.SetSelectedItem(item);
+    }
+
+    /// <summary>
+    /// The items in the list.
+    /// </summary>
+    public IEnumerable<T> Items
+    {
+        get => _listBox.Items;
+        set => _listBox.Items = value;
+    }
+
+    /// <summary>
+    /// The function that determines how to display an item.
+    /// </summary>
+    /// <remarks> Search functionality is based on this function. </remarks>
+    public required Func<T, string> DisplayFunc
+    {
+        get => _displayFunc;
+        init => _displayFunc = value;
+    }
+
+    /// <summary>
+    /// This action is called when an item is selected.
+    /// </summary>
+    public event Action<T>? SelectionChangedAction
+    {
+        add => _listBox.SelectionChanged += value;
+        remove => _listBox.SelectionChanged -= value;
     }
     
     /// <summary>
@@ -55,39 +107,5 @@ public sealed class SearchableSelectionList<T> : UserControl
     {
         get => _groupBox.Visibility == Visibility.Visible;
         set => _groupBox.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
-    }
-
-    /// <summary>
-    /// The items in the list.
-    /// </summary>
-    public required IEnumerable<T> Items
-    {
-        get => _listBox.Items;
-        set => _listBox.Items = value;
-    }
-
-    /// <summary>
-    /// The function that determines how to display an item.
-    /// </summary>
-    /// <remarks> Search functionality is based on this function. </remarks>
-    public required Func<T, string> DisplayFunc
-    {
-        get => _listBox.DisplayFunc;
-        init => _listBox.DisplayFunc = value;
-    }
-
-    /// <summary>
-    /// This action is called when an item is selected.
-    /// </summary>
-    public required Action<T> SelectionChangedAction
-    {
-        init
-        {
-            _listBox.SelectionChangedAction = item =>
-            {
-                _groupBox.Content = new TextBlock { Text = DisplayFunc(item) };
-                value.Invoke(item);
-            };
-        }
     }
 }

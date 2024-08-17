@@ -10,7 +10,9 @@ public class CustomListBoxWindow : Window
     private readonly SearchBox _searchBox;
     private readonly GroupBox _groupBox = new() { Header = "Selected" };
     private readonly ScrollViewer _scrollViewer = new();
-    private readonly CustomListBox<MyClass> _listBox = new();
+    private readonly CustomListBox<MyClass> _listBox;
+    
+    private Func<MyClass, bool> _filterFunc;
     
     public CustomListBoxWindow()
     {
@@ -25,18 +27,27 @@ public class CustomListBoxWindow : Window
             new MyClass { Name = "Jane", Age = 50 }
         };
         
-        _listBox.Items = items;
+        _listBox = new CustomListBox<MyClass>()
+        {
+            DisplayFunc = x => x.Name,
+            FilterFunc = x => _filterFunc != null && _filterFunc.Invoke(x)
+        };
         
-        _listBox.DisplayFunc = item => item.Name;
+        _listBox.Items = items;
         
         _searchBox = new SearchBox("Search", x =>
         {
-            _listBox.FilterFunc = item => item.Name.Contains(x ?? string.Empty, StringComparison.InvariantCultureIgnoreCase);
+            if (x == null)
+            {
+                _listBox.Items = items;
+                return;
+            }
+            _listBox.Items = items.Where(y => y.Name.Contains(x));
         });
         
-        _listBox.SelectionChangedAction = item =>
+        _listBox.SelectionChanged += x =>
         {
-            _groupBox.Content = new TextBlock { Text = _listBox.DisplayFunc(item) };
+            _groupBox.Content = x;
         };
         
         _scrollViewer.Content = _listBox;
@@ -47,7 +58,7 @@ public class CustomListBoxWindow : Window
         
         Content = _stackPanel;
     }
-    
+
     class MyClass
     {
         public string Name { get; set; }
