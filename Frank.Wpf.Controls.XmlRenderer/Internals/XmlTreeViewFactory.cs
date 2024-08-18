@@ -51,10 +51,33 @@ public class XmlTreeViewFactory
 
     private static void AddChildElementsToTreeViewItem(XElement element, TreeViewItem treeViewItem)
     {
-        foreach (var childElement in element.Elements())
+        var childGroups = element.Elements().GroupBy(e => e.Name.LocalName).ToList();
+
+        foreach (var group in childGroups)
         {
-            var childItem = CreateTreeViewItem(childElement);
-            treeViewItem.Items.Add(childItem);
+            var isCollection = group.Count() > 1;
+
+            // Add count suffix for collections, even if they have only one element
+            if (isCollection || group.Count() == 1)
+            {
+                treeViewItem.Header = $"{treeViewItem.Header} [{group.Count()}]";
+            }
+
+            int index = 0;
+
+            foreach (var childElement in group)
+            {
+                var childItem = CreateTreeViewItem(childElement);
+
+                // Prepend index if this is part of a collection
+                if (isCollection || group.Count() == 1)
+                {
+                    childItem.Header = $"[{index}] {childItem.Header}";
+                    index++;
+                }
+
+                treeViewItem.Items.Add(childItem);
+            }
         }
     }
 
@@ -68,7 +91,8 @@ public class XmlTreeViewFactory
     {
         return new TreeViewItem
         {
-            Header = element.Name.LocalName
+            Header = element.Name.LocalName,
+            IsExpanded = true
         };
     }
 
@@ -76,7 +100,8 @@ public class XmlTreeViewFactory
     {
         return new TreeViewItem
         {
-            Header = $"@{attribute.Name.LocalName}: {attribute.Value}"
+            Header = $"@{attribute.Name.LocalName}: {attribute.Value}",
+            IsExpanded = true
         };
     }
 }
