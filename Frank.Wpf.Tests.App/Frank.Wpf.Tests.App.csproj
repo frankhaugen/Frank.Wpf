@@ -10,6 +10,7 @@
       <ProjectReference Include="..\Frank.Wpf.Controls.CompletionPopup\Frank.Wpf.Controls.CompletionPopup.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Controls.Code\Frank.Wpf.Controls.Code.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Controls.Console\Frank.Wpf.Controls.Console.csproj" />
+      <ProjectReference Include="..\Frank.Wpf.Controls.CSharpRenderer\Frank.Wpf.Controls.CSharpRenderer.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Controls.DataTableGrid\Frank.Wpf.Controls.DataTableGrid.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Controls.ExpandoControl\Frank.Wpf.Controls.ExpandoControl.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Controls.Git\Frank.Wpf.Controls.Git.csproj" />
@@ -20,6 +21,7 @@
       <ProjectReference Include="..\Frank.Wpf.Controls.RoslynScript\Frank.Wpf.Controls.RoslynScript.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Controls.SearchableList\Frank.Wpf.Controls.SearchableList.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Controls.SimpleInputs\Frank.Wpf.Controls.SimpleInputs.csproj" />
+      <ProjectReference Include="..\Frank.Wpf.Controls.VarDump\Frank.Wpf.Controls.VarDump.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Controls.XmlRenderer\Frank.Wpf.Controls.XmlRenderer.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Core\Frank.Wpf.Core.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Dialogs\Frank.Wpf.Dialogs.csproj" />

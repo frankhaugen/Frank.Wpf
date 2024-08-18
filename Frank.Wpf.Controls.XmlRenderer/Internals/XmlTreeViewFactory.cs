@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Xml.Linq;
 
 namespace Frank.Wpf.Controls.XmlRenderer.Internals;
@@ -51,32 +50,35 @@ public class XmlTreeViewFactory
 
     private static void AddChildElementsToTreeViewItem(XElement element, TreeViewItem treeViewItem)
     {
-        var childGroups = element.Elements().GroupBy(e => e.Name.LocalName).ToList();
+        var childElements = element.Elements().ToList();
+        
+        // Group child elements by their name to identify collections
+        var groupedElements = childElements.GroupBy(e => e.Name.LocalName);
 
-        foreach (var group in childGroups)
+        foreach (var group in groupedElements)
         {
             var isCollection = group.Count() > 1;
-
-            // Add count suffix for collections, even if they have only one element
-            if (isCollection || group.Count() == 1)
-            {
-                treeViewItem.Header = $"{treeViewItem.Header} [{group.Count()}]";
-            }
-
             int index = 0;
 
             foreach (var childElement in group)
             {
                 var childItem = CreateTreeViewItem(childElement);
 
-                // Prepend index if this is part of a collection
-                if (isCollection || group.Count() == 1)
+                // Only apply index prefix if it is part of a collection (i.e., multiple elements with the same name)
+                if (isCollection)
                 {
                     childItem.Header = $"[{index}] {childItem.Header}";
                     index++;
                 }
 
                 treeViewItem.Items.Add(childItem);
+            }
+
+            // Add count suffix for collection parent
+            if (isCollection)
+            {
+                treeViewItem.Header = $"{treeViewItem.Header} [{group.Count()}]";
+                treeViewItem.Tag = group.Count();
             }
         }
     }
@@ -92,7 +94,7 @@ public class XmlTreeViewFactory
         return new TreeViewItem
         {
             Header = element.Name.LocalName,
-            IsExpanded = true
+            Tag = element.Value
         };
     }
 
@@ -100,8 +102,7 @@ public class XmlTreeViewFactory
     {
         return new TreeViewItem
         {
-            Header = $"@{attribute.Name.LocalName}: {attribute.Value}",
-            IsExpanded = true
+            Header = $"@{attribute.Name.LocalName}: {attribute.Value}"
         };
     }
 }

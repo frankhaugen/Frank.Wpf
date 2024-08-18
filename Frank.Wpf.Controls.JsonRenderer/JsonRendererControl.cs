@@ -130,7 +130,7 @@ public class JsonRendererControl : ContentControl
             {
                 if (!item.IsSelected) return true;
             
-                var text = item.Header.As<Label>()?.Content.As<string>();
+                var text = item.Tag.As<string>();
                 if (text is not null)
                     Clipboard.SetText(text);
                 return false;

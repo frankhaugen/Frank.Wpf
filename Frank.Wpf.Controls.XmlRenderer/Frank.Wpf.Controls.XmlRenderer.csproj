@@ -5,7 +5,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Frank.Wpf.Controls.SimpleInputs\Frank.Wpf.Controls.SimpleInputs.csproj" />
-      <ProjectReference Include="..\Frank.Wpf.Controls.VarDump\Frank.Wpf.Controls.VarDump.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Core\Frank.Wpf.Core.csproj" />
     </ItemGroup>
 
