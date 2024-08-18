@@ -31,6 +31,8 @@ public class JsonRendererControl : ContentControl
         
         _tabControl.Items.Add(_rendererTabItem);
         _tabControl.Items.Add(rawJsonTabItem);
+        
+        _tabControl.KeyDown += HandleKeyDownEvent;
 
         Content = _tabControl;
     }
@@ -49,7 +51,7 @@ public class JsonRendererControl : ContentControl
                 return;
             }
 
-            _textBoxWithLineNumbers.Text = _jsonBeautifier.Beautify(value?.RootElement.ToString() ?? "{}");
+            _textBoxWithLineNumbers.Text = _jsonBeautifier.Beautify(value?.RootElement.GetRawText() ?? "{}");
             _treeView = _treeViewFactory.Create(_document);
         
             _rendererTabItem.Content.As<DockPanel>()?.Children.RemoveAt(1);
@@ -118,5 +120,35 @@ public class JsonRendererControl : ContentControl
     {
         _isExpanded = !_isExpanded;
         _treeViewWalker.Walk(_treeView, item => item.IsExpanded = _isExpanded);
+    }
+    
+    private void HandleKeyDownEvent(object sender, KeyEventArgs e)
+    {
+        if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.C)
+        {
+            _treeViewWalker.Walk(_treeView, item =>
+            {
+                if (!item.IsSelected) return true;
+            
+                var text = item.Header.As<Label>()?.Content.As<string>();
+                if (text is not null)
+                    Clipboard.SetText(text);
+                return false;
+            });
+        }
+        
+        if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.D)
+        {
+            try
+            {
+                var xaml = _treeView.ToXaml();
+                Clipboard.SetText(xaml);
+                Console.Beep();
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 }

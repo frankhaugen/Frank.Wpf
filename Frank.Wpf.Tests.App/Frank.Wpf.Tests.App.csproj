@@ -29,4 +29,8 @@
       <ProjectReference Include="..\Frank.Wpf.Windows.SqlRunner\Frank.Wpf.Windows.SqlRunner.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="ExtendedXmlSerializer" Version="3.7.18" />
+    </ItemGroup>
+
 </Project>

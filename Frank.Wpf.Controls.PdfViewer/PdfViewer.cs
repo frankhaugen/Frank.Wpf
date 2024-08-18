@@ -6,37 +6,61 @@ namespace Frank.Wpf.Controls.PdfViewer;
 /// <summary>
 /// A PDF viewer control that displays a PDF file.
 /// </summary>
-public class PdfViewer : GroupBox
+public class PdfViewer : UserControl
 {
     private readonly WebBrowser _content = new();
+    private readonly GroupBox _groupBox = new();
+    
+    private Memory<byte>? _pdfFileContent;
+    private FileInfo? _pdfFile;
 
-    public PdfViewer(string header)
+    public PdfViewer()
     {
-        Header = header;
-        base.Content = _content;
+        _groupBox.Header = "PDF Viewer";
+        Content = _groupBox;
     }
     
-    public void SetContent(FileInfo pdfFile) => _content.Source = new Uri(pdfFile.FullName);
-
-    public void SetContent(Memory<byte> pdfFile)
+    public FileInfo? LocalPdfFile
     {
-        var tempFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".pdf");
-        File.WriteAllBytes(tempFile, pdfFile.ToArray());
-        _content.Source = new Uri(tempFile);
+        get => _pdfFile;
+        set
+        {
+            _pdfFile = value;
+            if (value is null)
+            {
+                _pdfFileContent = null;
+                _content.Navigate("about:blank");
+                return;
+            }
+
+            if (_pdfFileContent == null || !value.Exists)
+            {
+                _pdfFileContent = null;
+                _content.Navigate("about:blank");
+                return;
+            }
+
+            _groupBox.Header = "PDF Viewer - " + value.Name;
+            _pdfFileContent = File.ReadAllBytes(value.FullName);
+            _content.NavigateToStream(new MemoryStream(_pdfFileContent.Value.ToArray()));
+        }
     }
     
-    public Memory<byte> GetContent() => new(File.ReadAllBytes(new Uri(_content.Source.OriginalString).LocalPath));
-
-    public PdfViewer(string header, FileInfo pdfFile)
+    public Memory<byte>? PdfFileContent
     {
-        Header = header;
-        _content.Source = new Uri(pdfFile.FullName);
-        base.Content = _content;
-    }
+        get => _pdfFileContent;
+        set
+        {
+            _pdfFileContent = value;
+            _groupBox.Header = "PDF Viewer";
+            if (value is null)
+            {
+                _pdfFile = null;
+                _content.Navigate("about:blank");
+                return;
+            }
 
-    public new FileInfo Content
-    {
-        get => new(_content.Source.OriginalString);
-        set => _content.Source = new Uri(value.FullName);
+            _content.NavigateToStream(new MemoryStream(value.Value.ToArray()));
+        }
     }
 }

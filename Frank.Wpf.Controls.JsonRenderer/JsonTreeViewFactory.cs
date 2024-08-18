@@ -1,9 +1,8 @@
 ﻿using Frank.Wpf.Core;
-
-namespace Frank.Wpf.Controls.JsonRenderer;
-
 using System.Text.Json;
 using System.Windows.Controls;
+
+namespace Frank.Wpf.Controls.JsonRenderer;
 
 public class JsonTreeViewFactory
 {
@@ -13,7 +12,7 @@ public class JsonTreeViewFactory
 
         // Render Root Element
         var root = document.RootElement;
-        var rootItem = CreateTreeViewItem("Root");
+        var rootItem = new TreeViewItem { Header = "Document" };
         treeView.Items.Add(rootItem);
 
         RenderElement(root, rootItem);
@@ -36,7 +35,9 @@ public class JsonTreeViewFactory
             case JsonValueKind.True:
             case JsonValueKind.False:
             case JsonValueKind.Null:
-                parentItem.Items.Add(CreateTreeViewItem(element.ToString()));
+                // Set the header to the value and do not add child items
+                parentItem.Header = $"{parentItem.Header}: {element}";
+                parentItem.Tag = element;
                 break;
         }
     }
@@ -45,9 +46,29 @@ public class JsonTreeViewFactory
     {
         foreach (var property in element.EnumerateObject())
         {
-            var item = CreateTreeViewItem(property.Name);
+            if (property.Name == "$id" || property.Name == "$type" || property.Name == "$ref")
+                continue;
+
+            if (property.Name == "$values")
+            {
+                // Set the count of the $values array on the parent
+                RenderArray(property.Value, parentItem);
+                continue;
+            }
+
+            var item = new TreeViewItem { Header = property.Name };
             parentItem.Items.Add(item);
-            RenderElement(property.Value, item);
+
+            // If the property is a primitive value, display it directly in the header
+            if (property.Value.ValueKind != JsonValueKind.Object && property.Value.ValueKind != JsonValueKind.Array)
+            {
+                item.Header = $"{property.Name}: {property.Value}";
+            }
+            else
+            {
+                // Recursively render child elements
+                RenderElement(property.Value, item);
+            }
         }
     }
 
@@ -56,16 +77,11 @@ public class JsonTreeViewFactory
         var index = 0;
         foreach (var arrayItem in element.EnumerateArray())
         {
-            var item = CreateTreeViewItem($"[{index++}]");
+            var item = new TreeViewItem { Header = $"[{index}]" };
             parentItem.Items.Add(item);
             RenderElement(arrayItem, item);
+            index++;
         }
-        parentItem.Header = new Label { Content = $"{parentItem.Header.As<Label>()?.Content.As<string>()}[{index}]" };
+        parentItem.Header = $"{parentItem.Header} [{index}]";
     }
-
-    private static TreeViewItem CreateTreeViewItem(string header) =>
-        new()
-        {
-            Header = new Label { Content = header }
-        };
 }

@@ -150,6 +150,20 @@ public class XmlRendererControl : UserControl
                 return false;
             });
         }
+        
+        if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.D)
+        {
+            try
+            {
+                var xaml = _treeView.ToXaml();
+                Clipboard.SetText(xaml);
+                Console.Beep();
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 
     private void Render()

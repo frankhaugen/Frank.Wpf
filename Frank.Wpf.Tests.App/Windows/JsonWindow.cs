@@ -1,8 +1,9 @@
 ﻿using System.Net.Http;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Windows;
 using Frank.Wpf.Controls.JsonRenderer;
-
-namespace Frank.Wpf.Tests.App.Windows;
+using Frank.Wpf.Tests.App.Factories;
 
 public class JsonWindow : Window
 {
@@ -15,18 +16,24 @@ public class JsonWindow : Window
         Height = 600;
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
         
-        var json = DownloadJsonAsync("https://api.nuget.org/v3/index.json");
-        
-        _jsonRenderer.Document = System.Text.Json.JsonDocument.Parse(json);
-        
         Content = _jsonRenderer;
+
+        // Initiate async operation to download and set JSON document
+        Loaded += OnWindowLoadedAsync;
+    }
+
+    private void OnWindowLoadedAsync(object sender, RoutedEventArgs e)
+    {
+        string json = GetJson();
+
+        // Parse the document and update the UI on the UI thread
+        _jsonRenderer.Document = JsonDocument.Parse(json);
     }
     
-    private static string DownloadJsonAsync(string url)
+    private static string GetJson()
     {
-        using var client = new HttpClient();
-        var response = client.GetAsync(url).GetAwaiter().GetResult();
-        response.EnsureSuccessStatusCode();
-        return response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+        var testData = TestDataFactory.CreateCommunity();
+        var json = JsonSerializer.Serialize(testData, new JsonSerializerOptions { WriteIndented = true, Converters = { new JsonStringEnumConverter()}, ReferenceHandler = ReferenceHandler.Preserve});
+        return json;
     }
 }

@@ -1,7 +1,11 @@
+using System.IO;
 using System.Net.Http;
 using System.Windows;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using Frank.Wpf.Controls.XmlRenderer;
+using Frank.Wpf.Tests.App.Factories;
+using Frank.Wpf.Tests.App.Models;
 
 namespace Frank.Wpf.Tests.App.Windows;
 
@@ -16,7 +20,7 @@ public class XmlWindow : Window
         Height = 600;
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
         
-        var xml = DownloadXmlAsync("https://docs.oasis-open.org/ubl/os-UBL-2.1/xml/UBL-Invoice-2.1-Example.xml");
+        var xml = GetXml();
         
         var xmlDocument = XDocument.Parse(xml);
         
@@ -25,15 +29,17 @@ public class XmlWindow : Window
         Content = _xmlRendererControl;
     }
     
-    private static string DownloadXmlAsync(string url)
+    private static string GetXml()
     {
-        using var client = new HttpClient();
+        var testData = TestDataFactory.CreateCommunity();
         
-        var request = new HttpRequestMessage(HttpMethod.Get, url);
-        request.Headers.Add("Accept", "application/xml");
+        var serializer = new XmlSerializer(typeof(Community));
+        var xml = "";
+
+        using var stringWriter = new StringWriter();
+        serializer.Serialize(stringWriter, testData);
+        xml = stringWriter.ToString();
         
-        var response = client.SendAsync(request).GetAwaiter().GetResult();
-        response.EnsureSuccessStatusCode();
-        return response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+        return xml;
     }
 }
