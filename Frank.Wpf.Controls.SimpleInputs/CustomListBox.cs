@@ -22,10 +22,11 @@ public class CustomListBox<T> : UserControl
     /// </summary>
     public CustomListBox()
     {
-        Content = _listBox;
         _filterFunc = _ => true;
         _listBox.SelectionMode = SelectionMode.Single;
         _listBox.SelectionChanged += ListBox_SelectionChanged;
+        
+        Content = _listBox;
     }
 
     /// <summary>
@@ -77,6 +78,11 @@ public class CustomListBox<T> : UserControl
             ApplyFilterAndSort();  // Apply sorting when display function changes
         }
     }
+    
+    /// <summary>
+    /// Gets or sets the function to create a tooltip for an item.
+    /// </summary>
+    public Func<T?, ToolTip?>? TooltipFunc { get; set; }
 
     /// <summary>
     /// Occurs when the selection of the ListBox changes.
@@ -126,7 +132,7 @@ public class CustomListBox<T> : UserControl
         if (DisplayFunc != null)
         {
             filteredItems = filteredItems.OrderBy(DisplayFunc).ToList();
-            _listBox.ItemTemplate = DataTemplateHelper.CreateTextBlockTemplate(DisplayFunc);
+            _listBox.ItemTemplate = DataTemplateHelper.CreateTextBlockTemplateWithTooltip(DisplayFunc, TooltipFunc);
         }
 
         // Set filtered and sorted items as the ItemsSource of the ListBox

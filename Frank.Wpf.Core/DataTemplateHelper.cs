@@ -34,6 +34,31 @@ public static class DataTemplateHelper
         return template;
     }
     
+    public static DataTemplate CreateTextBlockTemplateWithTooltip<T>(Func<T, string> displayFunc, Func<T?, ToolTip?>? tooltipFunc = null)
+    {
+        var factory = new FrameworkElementFactory(typeof(TextBlock));
+        factory.SetBinding(TextBlock.TextProperty, new System.Windows.Data.Binding
+        {
+            Converter = new FuncValueConverter<T, string>(displayFunc),
+            Mode = System.Windows.Data.BindingMode.OneWay
+        });
+
+        if (tooltipFunc != null)
+        {
+            factory.SetBinding(FrameworkElement.ToolTipProperty, new System.Windows.Data.Binding
+            {
+                Converter = new FuncValueConverter<T, ToolTip?>(tooltipFunc),
+                Mode = System.Windows.Data.BindingMode.OneWay
+            });
+        }
+
+        var template = new DataTemplate
+        {
+            VisualTree = factory
+        };
+        return template;
+    }
+    
     public static DataTemplate CreateLabelTemplate<T>(Func<T, string> displayFunc)
     {
         var factory = new FrameworkElementFactory(typeof(Label));

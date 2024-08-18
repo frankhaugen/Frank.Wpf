@@ -27,8 +27,9 @@ public class SearchableSelectionListWindow : Window
                 new Person { Name = "John", Age = 40, Address = new Address { Street = "123 Elm St", City = "Anytown", State = "NY", Zip = "12345" } },
                 new Person { Name = "Jane", Age = 50, Address = new Address { Street = "123 Main St", City = "Anytown", State = "NY", Zip = "12345" } }
             },
+            ItemsTooltip = item => new ToolTip() { Content = $"{item?.Name} is {item?.Age} years old." },
             Display = item => item.Name, // Custom display logic
-            Filter = (item, searchText) => searchText == null || item.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase)
+            Filter = (item, searchText) => searchText == null || item.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase),
         };
 
         _searchableSelectionList.SelectionChangedAction += selectedItem => _jsonRenderer.Document = JsonSerializer.SerializeToDocument(selectedItem, new JsonSerializerOptions { WriteIndented = true, Converters = { new JsonStringEnumConverter() }});

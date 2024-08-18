@@ -13,7 +13,6 @@
       <ProjectReference Include="..\Frank.Wpf.Controls.DataTableGrid\Frank.Wpf.Controls.DataTableGrid.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Controls.ExpandoControl\Frank.Wpf.Controls.ExpandoControl.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Controls.Git\Frank.Wpf.Controls.Git.csproj" />
-      <ProjectReference Include="..\Frank.Wpf.Controls.Grid\Frank.Wpf.Controls.Grid.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Controls.HttpMessage\Frank.Wpf.Controls.HttpMessage.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Controls.JsonRenderer\Frank.Wpf.Controls.JsonRenderer.csproj" />
       <ProjectReference Include="..\Frank.Wpf.Controls.Pages\Frank.Wpf.Controls.Pages.csproj" />

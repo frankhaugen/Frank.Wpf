@@ -13,7 +13,7 @@ public sealed class SearchableSelectionList<T> : UserControl
     private readonly StackPanel _stackPanel = new();
     private readonly SearchBox _searchBox = new() { Header = "Search" };
     private readonly GroupBox _groupBox = new() { Header = "Selected" };
-    private readonly ScrollViewer _scrollViewer = new();
+    private readonly ScrollViewer _scrollViewer;
     private readonly CustomListBox<T> _listBox;
 
     /// <summary>
@@ -22,6 +22,7 @@ public sealed class SearchableSelectionList<T> : UserControl
     public SearchableSelectionList()
     {
         _listBox = new CustomListBox<T> ();
+        _scrollViewer = new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled };
 
         _listBox.SelectionChanged += OnSelectionChanged;
 
@@ -70,6 +71,15 @@ public sealed class SearchableSelectionList<T> : UserControl
     {
         get => (arg1, s) => _listBox.FilterFunc!.Invoke(arg1) || string.IsNullOrEmpty(s);
         set => _listBox.FilterFunc = arg => value?.Invoke(arg, _searchBox.SearchText) ?? true;
+    }
+    
+    /// <summary>
+    /// Gets or sets the function used to display tooltips for items.
+    /// </summary>
+    public Func<T?, ToolTip?>? ItemsTooltip
+    {
+        get => _listBox.TooltipFunc;
+        set => _listBox.TooltipFunc = value;
     }
 
     /// <summary>
