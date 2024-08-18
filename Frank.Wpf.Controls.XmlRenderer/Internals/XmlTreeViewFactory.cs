@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
 using System.Xml.Linq;
 
-namespace Frank.Wpf.Controls.XmlRenderer;
+namespace Frank.Wpf.Controls.XmlRenderer.Internals;
 
 public class XmlTreeViewFactory
 {
@@ -12,36 +12,54 @@ public class XmlTreeViewFactory
 
         if (rootElement != null)
         {
-            var rootItem = new TreeViewItem { Header = rootElement.Name.LocalName };
+            var rootItem = CreateTreeViewItemFromElement(rootElement);
             treeView.Items.Add(rootItem);
-
-            RenderElement(rootElement, rootItem);
         }
 
         return treeView;
     }
 
-    private void RenderElement(XElement element, TreeViewItem parentItem)
+    private static TreeViewItem CreateTreeViewItemFromElement(XElement element)
     {
+        var treeViewItem = new TreeViewItem
+        {
+            Header = element.Name.LocalName,
+            IsExpanded = true
+        };
+
+        // Add attributes
         foreach (var attribute in element.Attributes())
         {
-            var attributeItem = new TreeViewItem { Header = $"@{attribute.Name.LocalName}: {attribute.Value}" };
-            parentItem.Items.Add(attributeItem);
+            var attributeItem = CreateTreeViewItemFromAttribute(attribute);
+            treeViewItem.Items.Add(attributeItem);
         }
 
-        foreach (var childElement in element.Elements())
+        // Add child elements or text content
+        if (element.HasElements)
         {
-            var childItem = new TreeViewItem { Header = childElement.Name.LocalName };
-            parentItem.Items.Add(childItem);
-
-            RenderElement(childElement, childItem);
+            foreach (var childElement in element.Elements())
+            {
+                var childItem = CreateTreeViewItemFromElement(childElement);
+                treeViewItem.Items.Add(childItem);
+            }
         }
-
-        // If the element contains text content, add it as a TreeViewItem
-        if (!string.IsNullOrWhiteSpace(element.Value) && !element.HasElements)
+        else if (!string.IsNullOrWhiteSpace(element.Value))
         {
-            var textItem = new TreeViewItem { Header = element.Value.Trim() };
-            parentItem.Items.Add(textItem);
+            var textItem = new TreeViewItem
+            {
+                Header = element.Value.Trim()
+            };
+            treeViewItem.Items.Add(textItem);
         }
+
+        return treeViewItem;
+    }
+
+    private static TreeViewItem CreateTreeViewItemFromAttribute(XAttribute attribute)
+    {
+        return new TreeViewItem
+        {
+            Header = $"@{attribute.Name.LocalName}: {attribute.Value}"
+        };
     }
 }

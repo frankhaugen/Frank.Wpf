@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Frank.Reflection.Dump" Version="1.3.0" />
+    </ItemGroup>
+
+</Project>

@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Windows;
 using Frank.Wpf.Controls.JsonRenderer;
+using Frank.Wpf.Controls.VarDump;
 using Frank.Wpf.Tests.App.Factories;
 
 public class JsonWindow : Window
@@ -33,6 +34,7 @@ public class JsonWindow : Window
     private static string GetJson()
     {
         var testData = TestDataFactory.CreateCommunity();
+        Clipboard.SetText(DumpHelper.DumpVar(testData));
         var json = JsonSerializer.Serialize(testData, new JsonSerializerOptions { WriteIndented = true, Converters = { new JsonStringEnumConverter()}, ReferenceHandler = ReferenceHandler.Preserve});
         return json;
     }

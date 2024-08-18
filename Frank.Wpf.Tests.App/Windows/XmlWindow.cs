@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Windows;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using Frank.Wpf.Controls.VarDump;
 using Frank.Wpf.Controls.XmlRenderer;
 using Frank.Wpf.Tests.App.Factories;
 using Frank.Wpf.Tests.App.Models;
@@ -32,6 +33,7 @@ public class XmlWindow : Window
     private static string GetXml()
     {
         var testData = TestDataFactory.CreateCommunity();
+        Clipboard.SetText(DumpHelper.DumpVar(testData));
         
         var serializer = new XmlSerializer(typeof(Community));
         var xml = "";
