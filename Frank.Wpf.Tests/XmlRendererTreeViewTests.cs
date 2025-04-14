@@ -6,14 +6,14 @@ using System.Xml;
 using System.Xml.Linq;
 using Frank.Wpf.Controls.XmlRenderer;
 using Frank.Wpf.Core;
-using Xunit.Abstractions;
 
 namespace Frank.Wpf.Tests;
 
-public class XmlRendererTreeViewTests(ITestOutputHelper outputHelper)
+public class XmlRendererTreeViewTests
 {
-    [WpfFact]
-    public void Test1()
+    [Test]
+    [TestExecutor<STAThreadExecutor>]
+    public async Task Test1()
     {
         var renderer = new XmlRendererControl();
 
@@ -24,7 +24,7 @@ public class XmlRendererTreeViewTests(ITestOutputHelper outputHelper)
         // var resultXml = XamlWriter.Save(renderer.Content.As<TabControl>()?.Items[0].As<TabItem>()?.Content.As<DockPanel>()?.Children[1].As<TreeView>() ?? throw new InvalidOperationException());
         var result = PrettyPrint(resultXml);
 
-        outputHelper.WriteLine(result);
+        TestContext.Current?.OutputWriter.WriteLine(result);
     }
 
     private static string DownloadXmlAsync(string url)

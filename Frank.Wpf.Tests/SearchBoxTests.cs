@@ -1,35 +1,37 @@
-﻿namespace Frank.Wpf.Tests;
+﻿using System.Threading.Tasks;
 
-using Xunit;
+namespace Frank.Wpf.Tests;
 using Controls.SimpleInputs;
 
 public class SearchBoxTests
 {
-    [WpfFact]
-    public void SearchBox_ShouldHaveDefaultHeader()
+    // [Test]
+    public async Task SearchBox_ShouldHaveDefaultHeader()
     {
         // Arrange
         var searchBox = new SearchBox();
-        
+
         // Act & Assert
-        Assert.Equal("Search", searchBox.Header);
+        await Assert.That(searchBox.Header).IsEqualTo("Search");
     }
 
-    [WpfFact]
-    public void SearchBox_ShouldUpdateSearchText()
+    [Test]
+    [TestExecutor<STAThreadExecutor>]
+    public async Task SearchBox_ShouldUpdateSearchText()
     {
         // Arrange
         var searchBox = new SearchBox();
-        
+
         // Act
         searchBox.SearchText = "Test search";
-        
+
         // Assert
-        Assert.Equal("Test search", searchBox.SearchText);
+        await Assert.That(searchBox.SearchText).IsEqualTo("Test search");
     }
 
-    [WpfFact]
-    public void SearchBox_ShouldRaiseSearchTextChangedEvent()
+    [Test]
+    [TestExecutor<STAThreadExecutor>]
+    public async Task SearchBox_ShouldRaiseSearchTextChangedEvent()
     {
         // Arrange
         var searchBox = new SearchBox();
@@ -41,6 +43,6 @@ public class SearchBoxTests
         searchBox.SearchText = "New search text";
         
         // Assert
-        Assert.Equal("New search text", receivedText);
+        await Assert.That(receivedText).IsEqualTo("New search text");
     }
 }

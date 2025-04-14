@@ -2,21 +2,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using Frank.Wpf.Core;
-using Xunit.Abstractions;
 
 namespace Frank.Wpf.Tests;
 
 public class XamlSerializerTests
 {
-    private readonly ITestOutputHelper _outputHelper;
-
-    public XamlSerializerTests(ITestOutputHelper outputHelper)
-    {
-        _outputHelper = outputHelper;
-    }
-    
-    [WpfFact]
-    public void Test1()
+    [Test]
+    [TestExecutor<STAThreadExecutor>]
+    public async Task Test1()
     {
         var uiElement = new System.Windows.Controls.StackPanel
         {
@@ -31,11 +24,11 @@ public class XamlSerializerTests
         };
         
         var result = XamlWriter.Save(uiElement);
-        _outputHelper.WriteLine(result);
+        TestContext.Current?.OutputWriter.WriteLine(result);
     }
     
     // [WpfFact]
-    public void Test2()
+    public async Task Test2()
     {
         var uiElement = new StackPanel
         {
@@ -44,7 +37,7 @@ public class XamlSerializerTests
             {
                 new MyDropDown<string>()
                 {
-                    Items = new[] { "One", "Two", "Three" },
+                    Items = ["One", "Two", "Three"],
                     DisplayFunc = x => x,
                     SelectionChangedAction = x => { }
                 }
@@ -52,9 +45,10 @@ public class XamlSerializerTests
         };
         
         var result = XamlWriter.Save(uiElement);
-        _outputHelper.WriteLine(result);
-        
-        Assert.Contains("One", result);
+        TestContext.Current?.OutputWriter.WriteLine(result);
+     
+        // Assert
+        await Assert.That(result).IsEqualTo("One,Two,Three");
     }
     
 }

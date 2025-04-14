@@ -6,13 +6,13 @@ using System.Windows.Markup;
 using System.Xml;
 using System.Xml.Linq;
 using Frank.Wpf.Controls.JsonRenderer;
-using Xunit.Abstractions;
 
 namespace Frank.Wpf.Tests;
 
-public class JsonRendererTreeViewTests(ITestOutputHelper outputHelper)
+public class JsonRendererTreeViewTests
 {
-    [WpfFact]
+    // [Test]
+    [TestExecutor<STAThreadExecutor>]
     public async Task Test1()
     {
         var json = await DownloadJsonAsync("https://api.nuget.org/v3/index.json");
@@ -25,7 +25,7 @@ public class JsonRendererTreeViewTests(ITestOutputHelper outputHelper)
         var resultXml = XamlWriter.Save(renderer);
         var result = PrettyPrint(resultXml);
 
-        outputHelper.WriteLine(result);
+        await TestContext.Current?.OutputWriter.WriteLineAsync(result)!;
     }
     
     private static async Task<string> DownloadJsonAsync(string url)

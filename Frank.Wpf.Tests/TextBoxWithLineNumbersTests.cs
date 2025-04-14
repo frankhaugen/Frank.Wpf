@@ -1,19 +1,19 @@
 using System.Windows.Markup;
 using Frank.Wpf.Controls.SimpleInputs;
-using Xunit.Abstractions;
 
 namespace Frank.Wpf.Tests;
 
-public class TextBoxWithLineNumbersTests(ITestOutputHelper outputHelper)
+public class TextBoxWithLineNumbersTests
 {
-    [WpfFact]
-    public void Test1()
+    [Test]
+    [TestExecutor<STAThreadExecutor>]
+    public async Task Test1()
     {
         var textBoxWithLineNumbers = new TextBoxWithLineNumbers();
         textBoxWithLineNumbers.Text = "Hello world";
         
         var result = XamlWriter.Save(textBoxWithLineNumbers);
         
-        outputHelper.WriteLine(result);
+        await TestContext.Current?.OutputWriter.WriteLineAsync(result)!;
     }
 }

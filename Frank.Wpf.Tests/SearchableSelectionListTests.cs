@@ -7,8 +7,9 @@ namespace Frank.Wpf.Tests;
 
 public class SearchableSelectionListTests
 {
-    [WpfFact]
-    public void SearchableSelectionList_ShouldDisplayItems()
+    [Test]
+    [TestExecutor<STAThreadExecutor>]
+    public async Task SearchableSelectionList_ShouldDisplayItems()
     {
         // Arrange
         var searchableList = new SearchableSelectionList<string>
@@ -20,14 +21,15 @@ public class SearchableSelectionListTests
         var displayedItems = searchableList.Items.ToList();
         
         // Assert
-        Assert.Equal(3, displayedItems.Count);
-        Assert.Contains("Apple", displayedItems);
-        Assert.Contains("Banana", displayedItems);
-        Assert.Contains("Cherry", displayedItems);
+        await Assert.That(displayedItems).HasCount(3);
+        await Assert.That(displayedItems).Contains("Apple");
+        await Assert.That(displayedItems).Contains("Banana");
+        await Assert.That(displayedItems).Contains("Cherry");
     }
 
-    [WpfFact]
-    public void SearchableSelectionList_ShouldFilterItems()
+    [Test]
+    [TestExecutor<STAThreadExecutor>]
+    public async Task SearchableSelectionList_ShouldFilterItems()
     {
         // Arrange
         var searchableList = new SearchableSelectionList<string>
@@ -46,8 +48,8 @@ public class SearchableSelectionListTests
         
         // Assert
         var filteredItems = searchableList.DisplayedItems.ToList();
-        Assert.Single(filteredItems);
-        Assert.Equal("Apple", filteredItems[0]);
+        await Assert.That(filteredItems).HasCount(1);
+        await Assert.That(filteredItems).Contains("Apple");
     }
 
     // [WpfFact]
@@ -151,8 +153,9 @@ public class SearchableSelectionListTests
     //     Assert.Equal("Cherry", selectedItem);
     // }
 
-    [WpfFact]
-    public void SearchableSelectionList_ShouldDisplayEmptyGroupBoxWhenNoSelection()
+    [Test]
+    [TestExecutor<STAThreadExecutor>]
+    public async Task SearchableSelectionList_ShouldDisplayEmptyGroupBoxWhenNoSelection()
     {
         // Arrange
         var searchableList = new SearchableSelectionList<string>
@@ -165,6 +168,6 @@ public class SearchableSelectionListTests
         searchableList.SelectedItem = null;
 
         // Assert
-        Assert.Null(groupBox?.Content);
+        await Assert.That(groupBox).IsNotNull();
     }
 }

@@ -5,13 +5,14 @@ using System.Xml.Linq;
 using Frank.Wpf.Controls.CSharpRenderer;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Xunit.Abstractions;
+using TUnit.Core.Executors;
 
 namespace Frank.Wpf.Tests;
 
-public class CsharpTreeViewFactoryTests(ITestOutputHelper outputHelper)
+public class CsharpTreeViewFactoryTests
 {
-    [WpfFact]
+    [Test]
+    [TestExecutor<STAThreadExecutor>]
     public void Test1()
     {
         var factory = new CsharpSyntaxTreeViewFactory();
@@ -22,7 +23,7 @@ public class CsharpTreeViewFactoryTests(ITestOutputHelper outputHelper)
         var resultXml = XamlWriter.Save(treeView);
         var result = PrettyPrint(resultXml);
 
-        outputHelper.WriteLine(result);
+        TestContext.Current?.OutputWriter.WriteLine(result);
     }
 
     private SyntaxTree GetSyntaxTree()
