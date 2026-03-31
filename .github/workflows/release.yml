@@ -39,6 +39,7 @@ jobs:
         run: dotnet nuget push **/*.nupkg  -k ${{ github.token }} -s https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json --skip-duplicate
 
       - name: Attach to GitHub Release
+        if: ${{ steps.get_release.outputs.id != '' }}
         uses: xresloader/upload-to-github-release@v1
         with:
           file: '**/*.nupkg'
@@ -50,7 +51,7 @@ jobs:
 
   prerelease_nuget:
     name: Prerelease to NuGet.org ([nuget-preview])
-    if: github.event_name == 'release' && github.event.release.prerelease == true && (contains(github.event.release.name, '[nuget-preview]') || contains(github.event.release.body, '[nuget-preview]'))
+    if: github.event_name == 'release' && github.event.release.prerelease == true && (contains(github.event.release.name || '', '[nuget-preview]') || contains(github.event.release.body || '', '[nuget-preview]'))
     runs-on: windows-latest
     steps:
       - name: Checkout Repository
