@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 
 namespace Frank.Wpf.Hosting;
 
@@ -15,7 +15,7 @@ public interface IWindowFactory
     /// <summary>
     /// Creates a window with the specified name.
     /// </summary>
-    /// <param name="name">Name of the window from the property <see cref="Window.Name"/>.</param>
+    /// <param name="name">Logical name of the window (see <see cref="FrameworkElement.Name"/>).</param>
     /// <param name="show">Whether to show the window after creation.</param>
     /// <returns>The window with the specified name.</returns>
     Window CreateWindow(string name, bool show = false);

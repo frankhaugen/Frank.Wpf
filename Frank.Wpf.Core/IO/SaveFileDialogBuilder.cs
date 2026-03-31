@@ -4,11 +4,11 @@ namespace Frank.Wpf.Core;
 
 public class SaveFileDialogBuilder : FileDialogBuilderBase, ISingleFileDialogResult
 {
-    private readonly SaveFileDialog _dialog;
+    private new readonly SaveFileDialog _dialog;
 
     public SaveFileDialogBuilder() : base(new SaveFileDialog())
     {
-        _dialog = (SaveFileDialog)_dialog;
+        _dialog = (SaveFileDialog)base._dialog;
     }
 
     public FileInfo? FileInfo => _dialog.FileName != null ? new FileInfo(_dialog.FileName) : null;

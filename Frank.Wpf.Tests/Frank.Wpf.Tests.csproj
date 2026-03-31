@@ -3,6 +3,7 @@
     <PropertyGroup>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+        <NoWarn>$(NoWarn);TUnit0014;TUnitAssertions0005</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>

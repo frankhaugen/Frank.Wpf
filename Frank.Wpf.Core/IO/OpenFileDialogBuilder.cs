@@ -4,11 +4,11 @@ namespace Frank.Wpf.Core;
 
 public class OpenFileDialogBuilder : FileDialogBuilderBase, ISingleFileDialogResult, IMultipleFileDialogResult
 {
-    private readonly OpenFileDialog _dialog;
+    private new readonly OpenFileDialog _dialog;
 
     public OpenFileDialogBuilder() : base(new OpenFileDialog())
     {
-        _dialog = (OpenFileDialog)_dialog;
+        _dialog = (OpenFileDialog)base._dialog;
     }
 
     public FileInfo? FileInfo => _dialog.FileNames.Length > 0 ? new FileInfo(_dialog.FileNames[0]) : null;
