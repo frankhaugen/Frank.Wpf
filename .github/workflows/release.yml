@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  release_job:
-    name: Release Job
-    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+  stable_release:
+    name: Stable release (NuGet + GitHub Packages)
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'release' && github.event.release.prerelease == false)
     runs-on: windows-latest
     steps:
       - name: Checkout Repository
@@ -26,9 +26,6 @@ jobs:
       - name: Build Solution
         run: dotnet build --configuration Release --no-restore /p:Version=${{ steps.get_release.outputs.tag }}.${{ github.run_number }}
 
-#      - name: Run Tests
-#        run: dotnet test --no-build --configuration Release --logger trx --results-directory TestResults
-
       - name: Pack NuGet Packages
         run: dotnet pack --no-build --configuration Release --output nupkgs /p:Version=${{ steps.get_release.outputs.tag }}
 
@@ -37,10 +34,10 @@ jobs:
 
       - name: Add GitHub NuGet Source
         run: dotnet nuget add source --username ${{ github.repository_owner }} --password ${{ github.token }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
-        
+
       - name: Push NuGet Packages to GitHub
         run: dotnet nuget push **/*.nupkg  -k ${{ github.token }} -s https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json --skip-duplicate
-      
+
       - name: Attach to GitHub Release
         uses: xresloader/upload-to-github-release@v1
         with:
@@ -50,3 +47,30 @@ jobs:
           verbose: true
         env:
           GITHUB_TOKEN: ${{ github.token }}
+
+  prerelease_nuget:
+    name: Prerelease to NuGet.org ([nuget-preview])
+    if: github.event_name == 'release' && github.event.release.prerelease == true && (contains(github.event.release.name, '[nuget-preview]') || contains(github.event.release.body, '[nuget-preview]'))
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Resolve package version from release tag
+        id: ver
+        shell: pwsh
+        run: |
+          $tag = "${{ github.event.release.tag_name }}" -replace '^v',''
+          "base=$tag" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+
+      - name: Restore NuGet Packages
+        run: dotnet restore
+
+      - name: Build Solution
+        run: dotnet build --configuration Release --no-restore /p:Version=${{ steps.ver.outputs.base }}.${{ github.run_number }}
+
+      - name: Pack NuGet Packages
+        run: dotnet pack --no-build --configuration Release --output nupkgs /p:Version=${{ steps.ver.outputs.base }}.${{ github.run_number }}-preview
+
+      - name: Push NuGet Packages
+        run: dotnet nuget push **/*.nupkg  -k ${{ secrets.nugetkey }} -s https://api.nuget.org/v3/index.json --skip-duplicate
