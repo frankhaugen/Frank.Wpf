@@ -1,4 +1,4 @@
-name: Merge Workflow
+name: CI: main
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   merge_job:
-    name: Merge Job (Windows)
+    name: Preview packages (Windows)
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: windows-latest
     steps:
